@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             images.forEach(image => {
                 if (clickX > image.x && clickX < image.x + image.width && clickY > image.y && clickY < image.y + image.height && !image.isAnimating) {
-                    const increase = 20;
+                    const increase = 15;
                     const newHeight = image.height + increase;
                     const newWidth = newHeight * (image.img.width / image.img.height);
                     const newCenterX = image.x + image.width / 2;
