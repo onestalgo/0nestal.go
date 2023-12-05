@@ -1,0 +1,26 @@
+/* Resets */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+#canvas-container {
+    overflow: auto; /* Enable scrolling */
+    width: 100%; /* Full width of the viewport */
+    height: 100vh; /* Full height of the viewport */
+}
+
+canvas {
+    display: block; /* Remove extra space around the canvas */
+    background-color: #fffcfc; /* Optional: for visibility */
+}
+
+/* Styles for the upload button */
+#uploadButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px;
+    z-index: 10; /* Makes sure the button is above the canvas */
+}
