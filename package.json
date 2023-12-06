@@ -111,6 +111,10 @@
     "ws": "^8.11.0",
     "yallist": "^4.0.0"
   },
+
+  "engines": {
+    "node": "20.9.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
