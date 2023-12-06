@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const uploadButton = document.getElementById('uploadButton');
-    const socket = io();
+   // const socket = io();
+   const socket = io('http://localhost:3000');
     let images = [];
 
     canvas.width = 1440;  // Set desired dimensions
@@ -13,24 +14,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setupCanvasEventListeners() {
         canvas.addEventListener('click', function (e) {
+            images = images.filter(image => !image.deleted);
+            
             const rect = canvas.getBoundingClientRect();
             const clickX = e.clientX - rect.left + window.scrollX;
             const clickY = e.clientY - rect.top + window.scrollY;
-
+    
             images.forEach(image => {
                 if (clickX > image.x && clickX < image.x + image.width && clickY > image.y && clickY < image.y + image.height && !image.isAnimating) {
-                    const increase = 14;
+                    const thirdWidth = image.width / 3;
+                    const leftThird = image.x + thirdWidth;
+                    const rightThird = image.x + 2 * thirdWidth;
+    
+                    const deltaX = clickX < leftThird ? -10 : clickX > rightThird ? 10 : 0;
+                    const increase = 10;
                     const newHeight = image.height + increase;
                     const newWidth = newHeight * (image.img.width / image.img.height);
-                    const newCenterX = image.x + image.width / 2;
-                    const newCenterY = image.y + image.height / 2;
+                    const newCenterX = image.x + image.width / 2 + deltaX;
                     const newX = newCenterX - newWidth / 2;
-                    const newY = newCenterY - newHeight / 2;
+                    const newY = image.y + (image.height - newHeight) / 2;
+    
+                    
+                                 
 
                     const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
-                    socket.emit('startResizeAnimation', { src: image.img.src, x: newX, y: newY, width: newWidth, height: newHeight, color: randomColor });
-
-                    image.isAnimating = true;
+                    animateBorder(image, newX, newY, newWidth, newHeight, randomColor);
+    
                     setTimeout(() => {
                         image.x = newX;
                         image.y = newY;
@@ -38,10 +47,33 @@ document.addEventListener('DOMContentLoaded', function () {
                         image.height = newHeight;
                         image.isAnimating = false;
                         drawImages();
+                        socket.emit('resizeAndMoveImage', { src: image.img.src, x: newX, y: newY, width: newWidth, height: newHeight });
+                        checkAndDeleteImage(image);
                     }, 500);
                 }
+                checkAndDeleteImage(image); 
+                drawImages(); // Redraw the canvas after all updates
             });
         });
+
+        function checkAndDeleteImage(image) {
+            const oneThirdWidth = image.width / 3;
+            const oneThirdHeight = image.height / 3;
+            const offCanvas = image.x + oneThirdWidth < 0 || image.x + 2 * oneThirdWidth > canvas.width ||
+                              image.y + oneThirdHeight < 0 || image.y + 2 * oneThirdHeight > canvas.height;
+        
+            const tooLarge = image.width >= 1000 || image.height >= 1000;
+        
+            if (offCanvas || tooLarge) {
+                socket.emit('deleteImage', { src: image.img.src });
+                
+                const index = images.indexOf(image);
+                if (index > -1) {
+                    images.splice(index, 1);
+                    drawImages(); // Redraw the canvas immediately
+                }
+            }
+        }
     }
 
     function setupSocketListeners() {
@@ -59,6 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
             drawImages();
         });
 
+     
+       
+
+      
         socket.on('resizeAnimation', data => {
             images.forEach(image => {
                 if (image.src === data.src) {
@@ -75,6 +111,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     }, 500);
                 }
             });
+        });
+
+        socket.on('imageDeleted', data => {
+            // Relocate the image outside the canvas bounds
+            const imageToDelete = images.find(image => image.src === data.src);
+            if (imageToDelete) {
+                imageToDelete.x = -10000; // Move far outside the canvas
+                imageToDelete.y = -10000;
+                drawImages(); // Redraw the canvas
+            }
         });
     }
 
@@ -107,10 +153,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawImages() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
         images.forEach(image => {
-            ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
+            if (image.x > -10000 && image.y > -10000) {
+                ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
+            }
         });
     }
+    
+    
 
     uploadButton.addEventListener('click', function () {
         let input = document.createElement('input');
