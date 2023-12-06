@@ -10,7 +10,7 @@ const server = http.createServer(app);
 //const io = socketIo(server);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.FRONTEND_URL || "http://localhost:3000", // Use environment variable for production
         methods: ["GET", "POST"]
     }
 });
@@ -85,7 +85,7 @@ async function main() {
 
     });
 
-    const port = 3000;
+    const port = process.env.PORT || 3000; // Use PORT environment variable for Heroku
     server.listen(port, () => console.log(`Server running on port: ${port}`));
 
     app.use(express.static('public'));
