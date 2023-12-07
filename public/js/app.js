@@ -14,13 +14,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setupCanvasEventListeners() {
         canvas.addEventListener('click', function (e) {
-            images = images.filter(image => !image.deleted);
-            
             const rect = canvas.getBoundingClientRect();
             const clickX = e.clientX - rect.left + window.scrollX;
             const clickY = e.clientY - rect.top + window.scrollY;
     
             images.forEach(image => {
+                if (clickX > image.x && clickX < image.x + image.width && clickY > image.y && clickY < image.y + image.height && !image.isAnimating) {
+                    handleImageResizeAndAnimation(image, clickX, clickY);
+                }
+            });
+        });
+    
+        function handleImageResizeAndAnimation(image, clickX, clickY) {
                 if (clickX > image.x && clickX < image.x + image.width && clickY > image.y && clickY < image.y + image.height && !image.isAnimating) {
                     const thirdWidth = image.width / 3;
                     const leftThird = image.x + thirdWidth;
@@ -46,15 +51,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         image.width = newWidth;
                         image.height = newHeight;
                         image.isAnimating = false;
-                        drawImages();
                         socket.emit('resizeAndMoveImage', { src: image.img.src, x: newX, y: newY, width: newWidth, height: newHeight });
                         checkAndDeleteImage(image);
                     }, 500);
                 }
-                checkAndDeleteImage(image); 
-                drawImages(); // Redraw the canvas after all updates
-            });
-        });
+            }
 
         function checkAndDeleteImage(image) {
             const oneThirdWidth = image.width / 3;
@@ -128,29 +129,37 @@ document.addEventListener('DOMContentLoaded', function () {
         let opacity = 0;
         const startTime = Date.now();
         const duration = 500;
-
+    
         function animate() {
             const currentTime = Date.now();
             const elapsed = currentTime - startTime;
-            opacity = elapsed / duration;
-            if (opacity > 1) opacity = 1;
-
+            opacity = Math.min(elapsed / duration, 1); // Ensure opacity doesn't exceed 1
+    
+            // Clear the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.save();
-            ctx.globalAlpha = opacity;
-            ctx.fillStyle = color;
-            ctx.fillRect(x, y, width, height);
-            ctx.restore();
 
-            drawImages();
-
-            if (opacity < 1) {
-                requestAnimationFrame(animate);
-            }
+              // Now, draw the border behind the specific image being animated
+              ctx.save();
+              ctx.globalAlpha = opacity;
+              ctx.fillStyle = color;
+              ctx.fillRect(x, y, width, height); // Draws the animated border behind the image
+              ctx.restore();
+      
+              if (opacity < 1) {
+                  requestAnimationFrame(animate);
+              }
+    
+            // Draw all images first
+            images.forEach(img => {
+                ctx.drawImage(img.img, img.x, img.y, img.width, img.height);
+            });
+    
+          
         }
-
+    
         animate();
     }
+    
 
     function drawImages() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -161,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    
     
     
 
