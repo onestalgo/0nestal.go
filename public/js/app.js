@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const ctx = canvas.getContext('2d');
     const uploadButton = document.getElementById('uploadButton');
    // const socket = io();
-   const socket = io('http://localhost:3000');
+   const socket = io(window.location.origin);
     let images = [];
 
     canvas.width = 1440;  // Set desired dimensions
