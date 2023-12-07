@@ -4,16 +4,18 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const { MongoClient } = require('mongodb');
+const { body, validationResult } = require('express-validator');
 
 const app = express();
 const server = http.createServer(app);
-//const io = socketIo(server);
 const io = require('socket.io')(server, {
     cors: {
-        origin: process.env.FRONTEND_URL || "http://localhost:3000", // Use environment variable for production
+        origin: process.env.FRONTEND_URL || "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 });
+
+app.use(express.json()); // Middleware to parse JSON bodies
 
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
@@ -25,6 +27,22 @@ async function main() {
     console.log("Connected to MongoDB");
     const db = client.db(dbName);
     imagesCollection = db.collection("images");
+
+    // Image upload endpoint
+    app.post('/upload-image', 
+        // Validation checks
+        body('src').isString().withMessage('Source must be a string'),
+        body('x').isNumeric().withMessage('X coordinate must be a number'),
+        body('y').isNumeric().withMessage('Y coordinate must be a number'),
+        // ... more validations as needed ...
+        async (req, res) => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.status(400).json({ errors: errors.array() });
+            }
+            // Process the image upload here
+            // ...
+        });
 
     io.on('connection', async (socket) => {
         console.log('A user connected');

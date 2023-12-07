@@ -167,11 +167,27 @@ document.addEventListener('DOMContentLoaded', function () {
     uploadButton.addEventListener('click', function () {
         let input = document.createElement('input');
         input.type = 'file';
-        input.accept = 'image/*';
+        input.accept = 'image/*'; // Accept only image files
+    
         input.onchange = e => {
-            let file = e.target.files[0];
+            const file = e.target.files[0];
+    
+            if (!file || !file.type.startsWith('image/')) {
+                alert('Please upload a valid image file.');
+                return;
+            }
+    
+            // Define a size limit, e.g., 5MB
+            const sizeLimit = 5 * 1024 * 1024; // 5MB in bytes
+    
+            if (file.size > sizeLimit) {
+                alert('The file is too large. Please upload an image smaller than 5MB.');
+                return;
+            }
+    
             compressAndUploadImage(file);
         };
+    
         input.click();
     });
 
@@ -242,4 +258,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-//commit
