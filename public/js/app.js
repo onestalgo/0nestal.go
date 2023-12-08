@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setupCanvasEventListeners();
     setupSocketListeners();
-    enterFullScreenMode();
 
     function setupCanvasEventListeners() {
         canvas.addEventListener('click', function (e) {
@@ -190,6 +189,17 @@ document.addEventListener('DOMContentLoaded', function () {
             document.documentElement.msRequestFullscreen();
         }
     }
+
+    function triggerFullScreen() {
+        enterFullScreenMode();
+        // Remove event listeners after entering full screen
+        document.removeEventListener('touchstart', triggerFullScreen);
+        document.removeEventListener('click', triggerFullScreen);
+    }
+
+    // Add event listeners for the first user interaction
+    document.addEventListener('touchstart', triggerFullScreen);
+    document.addEventListener('click', triggerFullScreen);
 
 
     uploadButton.addEventListener('click', function () {
