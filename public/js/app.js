@@ -184,6 +184,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*'; // Accept only image files
+        input.capture = 'environment';
     
         input.onchange = e => {
             const file = e.target.files[0];
