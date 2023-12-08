@@ -8,7 +8,7 @@ html, body {
 #canvas-container {
     overflow: auto; /* Enable scrolling */
    /* width: 100%; /* Full width of the viewport */
-    height: 110vh; /* Full height of the viewport */
+    height: 120vh; /* Full height of the viewport */
 }
 
 canvas {

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setupCanvasEventListeners();
     setupSocketListeners();
+    
 
     function setupCanvasEventListeners() {
         canvas.addEventListener('click', function (e) {
@@ -56,6 +57,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     }, 500);
                 }
             }
+
+     // Function to hide the mobile browser's toolbar
+     function hideMobileToolbar() {
+        setTimeout(() => {
+            // Scrolls the page slightly to trigger toolbar hide
+            window.scrollTo(0, 1);
+        }, 100); // Delay to allow page layout to stabilize
+    }
+
+    // Call the function on page load
+    hideMobileToolbar();
+
 
         function checkAndDeleteImage(image) {
             const oneThirdWidth = image.width / 3;
@@ -178,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
-   
 
 
     uploadButton.addEventListener('click', function () {
