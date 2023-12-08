@@ -178,35 +178,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
     
-    function enterFullScreenMode() {
-        if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
-            document.documentElement.mozRequestFullScreen();
-        } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-            document.documentElement.webkitRequestFullscreen();
-        } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
-            document.documentElement.msRequestFullscreen();
-        }
-    }
-
-    function triggerFullScreen() {
-        enterFullScreenMode();
-        // Remove event listeners after entering full screen
-        document.removeEventListener('touchstart', triggerFullScreen);
-        document.removeEventListener('click', triggerFullScreen);
-    }
-
-    // Add event listeners for the first user interaction
-    document.addEventListener('touchstart', triggerFullScreen);
-    document.addEventListener('click', triggerFullScreen);
+   
 
 
     uploadButton.addEventListener('click', function () {
         let input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*'; // Accept only image files
-       // input.capture = 'environment';
+        input.capture = 'environment';
     
         input.onchange = e => {
             const file = e.target.files[0];
