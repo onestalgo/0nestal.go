@@ -58,17 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             }
 
-     // Function to hide the mobile browser's toolbar
-     function hideMobileToolbar() {
-        setTimeout(() => {
-            // Scrolls the page slightly to trigger toolbar hide
-            window.scrollTo(0, 1);
-        }, 100); // Delay to allow page layout to stabilize
-    }
-
-    // Call the function on page load
-    hideMobileToolbar();
-
+   
 
         function checkAndDeleteImage(image) {
             const oneThirdWidth = image.width / 3;
@@ -286,6 +276,35 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         reader.readAsDataURL(file);
     }
+
+    let hasScrolled = false;
+
+window.addEventListener('scroll', () => {
+    if (!hasScrolled) {
+        enterFullScreenMode();
+        hasScrolled = true;
+
+        // Adjust the canvas height after the toolbar is hidden
+        const canvasContainer = document.getElementById('canvas-container');
+        canvasContainer.style.height = '100vh'; // Adjust this value as needed
+    }
+});
+
+function enterFullScreenMode() {
+    // Get the document's root element
+    var docElement = document.documentElement;
+
+    // Check for each browser's specific full-screen method and call it
+    if (docElement.requestFullscreen) {
+        docElement.requestFullscreen();
+    } else if (docElement.mozRequestFullScreen) { /* Firefox */
+        docElement.mozRequestFullScreen();
+    } else if (docElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        docElement.webkitRequestFullscreen();
+    } else if (docElement.msRequestFullscreen) { /* IE/Edge */
+        docElement.msRequestFullscreen();
+    }
+}
 
    
 });
