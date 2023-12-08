@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                                  
 
-                    const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
+                    const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
                     animateBorder(image, newX, newY, newWidth, newHeight, randomColor);
     
                     setTimeout(() => {
@@ -86,41 +86,43 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             drawImages();
         });
-
+    
         socket.on('imageUpdate', data => {
             updateOrAddImage(data);
             drawImages();
         });
+  
+        socket.on('resizeAnimationStart', (data) => {
+            const imageToAnimate = images.find(img => img.src === data.src);
+            if (imageToAnimate) {
+                const newWidth = data.width;
+                const newHeight = data.height;
+                const newX = data.x;
+                const newY = data.y;
+                const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 0.5)`;
+        
+                // Start animation on all clients
+        
+                setTimeout(() => {
+                    imageToAnimate.x = newX;
+                    imageToAnimate.y = newY;
+                    imageToAnimate.width = newWidth;
+                    imageToAnimate.height = newHeight;
+                    imageToAnimate.isAnimating = false;
+                    drawImages();
+                }, 500); // Ensure this duration matches the animation duration
+           
+                animateBorder(imageToAnimate, newX, newY, newWidth, newHeight, randomColor);
 
-     
-       
+            }
 
-      
-        socket.on('resizeAnimation', data => {
-            images.forEach(image => {
-                if (image.src === data.src) {
-                    animateBorder(image, data.x, data.y, data.width, data.height, data.color);
-                    setTimeout(() => {
-                        if (image.src === data.src) {
-                            image.x = data.x;
-                            image.y = data.y;
-                            image.width = data.width;
-                            image.height = data.height;
-                            image.isAnimating = false;
-                            drawImages();
-                        }
-                    }, 500);
-                }
-            });
         });
-
+    
         socket.on('imageDeleted', data => {
-            // Relocate the image outside the canvas bounds
-            const imageToDelete = images.find(image => image.src === data.src);
-            if (imageToDelete) {
-                imageToDelete.x = -10000; // Move far outside the canvas
-                imageToDelete.y = -10000;
-                drawImages(); // Redraw the canvas
+            const indexToDelete = images.findIndex(image => image.src === data.src);
+            if (indexToDelete !== -1) {
+                images.splice(indexToDelete, 1); // Remove the image from the array
+                drawImages(); // Redraw the canvas to reflect the deletion
             }
         });
     }
@@ -137,40 +139,44 @@ document.addEventListener('DOMContentLoaded', function () {
     
             // Clear the canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-              // Now, draw the border behind the specific image being animated
-              ctx.save();
-              ctx.globalAlpha = opacity;
-              ctx.fillStyle = color;
-              ctx.fillRect(x, y, width, height); // Draws the animated border behind the image
-              ctx.restore();
-      
-              if (opacity < 1) {
-                  requestAnimationFrame(animate);
-              }
     
-            // Draw all images first
+            // Draw all images and the animated border in their original order
             images.forEach(img => {
-                ctx.drawImage(img.img, img.x, img.y, img.width, img.height);
+                if (img !== image) {
+                    ctx.drawImage(img.img, img.x, img.y, img.width, img.height);
+                } else {
+                    // Draw animated border for the currently animating image
+                    ctx.save();
+                    ctx.globalAlpha = opacity;
+                    ctx.fillStyle = color;
+                    ctx.fillRect(x, y, width, height);
+                    ctx.restore();
+    
+                    // Draw the animating image itself
+                    ctx.drawImage(img.img, img.x, img.y, img.width, img.height);
+                }
             });
     
-          
+            if (opacity < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                // Redraw images to ensure correct ordering after animation completes
+                drawImages();
+            }
         }
     
         animate();
     }
     
-
     function drawImages() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+        
         images.forEach(image => {
-            if (image.x > -10000 && image.y > -10000) {
+            if (!image.isAnimating && image.x > -10000 && image.y > -10000) {
                 ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
             }
         });
     }
-    
     
     
 

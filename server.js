@@ -44,60 +44,56 @@ async function main() {
             // ...
         });
 
-    io.on('connection', async (socket) => {
-        console.log('A user connected');
-        try {
-            const images = await imagesCollection.find({}).toArray();
-            socket.emit('initialImages', images);
-        } catch (err) {
-            console.error('Error fetching images:', err);
-        }
-
-        socket.on('uploadImage', async (data) => {
+        io.on('connection', async (socket) => {
+            console.log('A user connected');
             try {
-                await imagesCollection.insertOne(data);
-                io.emit('imageUpdate', data);
-            } catch (e) {
-                console.error("Error saving image:", e);
-            }
-        });
-
-        socket.on('resizeAndMoveImage', async (data) => {
-            try {
-                await imagesCollection.updateOne({ src: data.src }, { $set: { x: data.x, y: data.y, width: data.width, height: data.height } });
-                io.emit('imageUpdate', data); // Broadcast updated data
-            } catch (e) {
-                console.error("Error updating image:", e);
-            }
-        });
-
-        socket.on('deleteImage', async (data) => {
-            try {
-                await imagesCollection.deleteOne({ src: data.src });
-                io.emit('imageDeleted', data); // Notify all clients about the deletion
-            } catch (e) {
-                console.error("Error deleting image:", e);
-            }
-        });
-
-        socket.on('resizeImage', async (data) => {
-            try {
-                const updateResult = await imagesCollection.updateOne({ src: data.src }, { $set: data });
-                if (updateResult.matchedCount === 0) {
-                    console.log('No matching document found to update');
-                } else {
-                    console.log('Document updated successfully');
-                    io.emit('imageUpdate', data); // Broadcast the update to all clients
-                }
+                const images = await imagesCollection.find({}).toArray();
+                socket.emit('initialImages', images);
             } catch (err) {
-                console.error('Error updating image in DB:', err);
+                console.error('Error fetching images:', err);
             }
-        });
-
-        socket.on('startResizeAnimation', (data) => {
-            // Broadcast the resize animation data to all clients
-            io.emit('resizeAnimation', data);
-        });
+    
+            socket.on('uploadImage', async (data) => {
+                try {
+                    await imagesCollection.insertOne(data);
+                    io.emit('imageUpdate', data);
+                } catch (e) {
+                    console.error("Error saving image:", e);
+                }
+            });
+    
+            socket.on('resizeAndMoveImage', async (data) => {
+                try {
+                    await imagesCollection.updateOne({ src: data.src }, { $set: { x: data.x, y: data.y, width: data.width, height: data.height } });
+                    io.emit('imageUpdate', data); // Broadcast updated data
+                    io.emit('resizeAnimationStart', data); // Trigger the animation on all clients
+                } catch (e) {
+                    console.error("Error updating image:", e);
+                }
+            });
+    
+            socket.on('deleteImage', async (data) => {
+                try {
+                    await imagesCollection.deleteOne({ src: data.src });
+                    io.emit('imageDeleted', data); // Notify all clients about the deletion
+                } catch (e) {
+                    console.error("Error deleting image:", e);
+                }
+            });
+    
+            socket.on('resizeImage', async (data) => {
+                try {
+                    const updateResult = await imagesCollection.updateOne({ src: data.src }, { $set: data });
+                    if (updateResult.matchedCount === 0) {
+                        console.log('No matching document found to update');
+                    } else {
+                        console.log('Document updated successfully');
+                        io.emit('imageUpdate', data); // Broadcast the update to all clients
+                    }
+                } catch (err) {
+                    console.error('Error updating image in DB:', err);
+                }
+            });
 
    
 
