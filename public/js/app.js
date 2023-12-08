@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     setupCanvasEventListeners();
     setupSocketListeners();
+    enterFullScreenMode();
 
     function setupCanvasEventListeners() {
         canvas.addEventListener('click', function (e) {
