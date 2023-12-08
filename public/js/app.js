@@ -273,5 +273,12 @@ document.addEventListener('DOMContentLoaded', function () {
         };
         reader.readAsDataURL(file);
     }
+
+    window.addEventListener("scroll", function() {
+        // When a scroll is detected, resize the viewport
+        setTimeout(() => {
+            window.scrollTo(0, 1);
+        }, 0);
+    });
 });
 
