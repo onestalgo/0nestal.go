@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const offCanvas = image.x + oneThirdWidth < 0 || image.x + 2 * oneThirdWidth > canvas.width ||
                               image.y + oneThirdHeight < 0 || image.y + 2 * oneThirdHeight > canvas.height;
         
-            const tooLarge = image.width >= 1000 || image.height >= 1000;
+            //const tooLarge = image.width >= 1000 || image.height >= 1000;
         
-            if (offCanvas || tooLarge) {
+            if (offCanvas) {
                 socket.emit('deleteImage', { src: image.img.src });
                 
                 const index = images.indexOf(image);
@@ -186,8 +186,8 @@ document.addEventListener('DOMContentLoaded', function () {
     uploadButton.addEventListener('click', function () {
         let input = document.createElement('input');
         input.type = 'file';
+        input.capture = 'environment';
         input.accept = 'image/*'; // Accept only image files
-        //input.capture = 'environment';
     
         input.onchange = e => {
             const file = e.target.files[0];

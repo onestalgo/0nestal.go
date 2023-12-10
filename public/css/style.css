@@ -14,13 +14,13 @@ html, body {
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     #canvas-container {
-        height: 200vh;
+        height: 90%;
     }
 }
 
 canvas {
     display: block; /* Remove extra space around the canvas */
-    background-color: #f4f4f4; /* Optional: for visibility */
+    background-color: hsl(0, 0%, 89%); /* Optional: for visibility */
 }
 
 /* Styles for the upload button */
