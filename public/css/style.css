@@ -14,7 +14,7 @@ html, body {
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     #canvas-container {
-        height: 90%;
+        height: 110vh;
     }
 }
 
