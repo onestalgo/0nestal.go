@@ -93,15 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setupSocketListeners() {
         socket.on('initialImages', (initialImages) => {
-            let loadedImagesCount = 0;
             images = initialImages.map(imageData => {
                 const img = new Image();
-                img.onload = () => {
-                    loadedImagesCount++;
-                    if (loadedImagesCount === initialImages.length) {
-                        drawImages();
-                    }
-                };
+                img.onload = () => drawImages(); // Draw images as they load
                 img.src = imageData.src;
                 return {...imageData, img};
             });
@@ -203,28 +197,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     uploadButton.addEventListener('click', function () {
-        fileInput.click(); // Open the hidden file input
+        fileInput.click();
     });
 
-    fileInput.onchange = e => {
+    fileInput.addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (!file) return;
+        if (!file || !file.type.startsWith('image/')) return;
 
-        // Check if the file is an image
-        if (!file.type.startsWith('image/')) {
-            alert('Please upload a valid image file.');
-            return;
-        }
-
-        // Define a size limit, e.g., 5MB
         const sizeLimit = 5 * 1024 * 1024; // 5MB in bytes
         if (file.size > sizeLimit) {
-            alert('The file is too large. Please upload an image smaller than 5MB.');
+            alert('File is too large.');
             return;
         }
 
         compressAndUploadImage(file);
-    };
+    });
     
     function updateOrAddImage(data) {
         const index = images.findIndex(image => image.src === data.src);
