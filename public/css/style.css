@@ -19,7 +19,7 @@ html, body {
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     #canvas-container {
-        height: calc(110vh - 30px); /* Adjust for the header height */
+        height: calc(150vh - 30px); /* Adjust for the header height */
     }
 }
 
