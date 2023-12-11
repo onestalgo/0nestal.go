@@ -7,10 +7,52 @@
     <link rel="stylesheet" href="/css/style.css"> <!-- Link to your CSS file -->
 </head>
 <body>
-    <div id="canvas-container">
+    <header id="header">
+        <div id="logo">
+            <img src="/logo/logonestalgo.png" alt="Your Logo">
+        </div>
+        <div id="about">
+            <a href="#" id="aboutLink"><h1>About</h1></a>
+        </div>
+        <div id="uploadButtonContainer">
+            <button id="uploadButton">Upload Image</button>
+        </div>
+
+     
+    </header>
+ <div id="canvas-container">
         <canvas id="canvas"></canvas>
-    </div>  
-    <button id="uploadButton">Upload Image</button>
+
+        <div id="popupWindow" class="popup-window hidden">
+            <div class="popup-content">
+                <!-- Your content goes here -->
+                <h1><p>images on internet are denatured by their context. (platform, creator, viewer, system, algorithm&#8230;)&#8232;&#8232;How an environment where images exist free from their biases would be ?<br>
+                    &#8232;Could social work without a network ?</p>
+                    
+                    <p>Onestalgo is a SANDBOX, The box is a fixed canvas, where users bring their images as the sand.&#8232;Users can shape this canvas, making these images grow, clicking on them, the click being then the shovel.<br>
+                    Bring your grain, free your brain<br>
+                    Bring your brain, free your grain</p>
+                    
+                    <p>
+                    Onestalgo is an online environment accessible on a browser.<br>
+                    Users can upload images on a fixed canvas and make them grow until disappearance.<br>
+                    Uploaded without identification, the image is set free from (community) intentions, and will resonate and serve into collective playful frame.<br>
+                    The individuality can only be shown as collaboration, serving the purpose of making the canvas evolve.<br>
+                    Image for Image, Onestalgo for creation.<br>
+                    Onestalgo invites the user to participate or contemplate</p>
+                    
+                    <p>Welcome to Onestalgo<br>
+                    Take place on the canvas<br>
+                    Upload an image<br>
+                    Click it to make it grow<br>
+                    You can click the other images too<br>
+                    Contemplate.</p>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+ 
 
     <!-- Hidden file input for image upload -->
     <input type="file" accept="image/*" capture="environment" id="fileInput" style="display: none;">

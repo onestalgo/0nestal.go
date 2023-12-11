@@ -8,6 +8,7 @@ const { body, validationResult } = require('express-validator');
 
 const app = express();
 const server = http.createServer(app);
+const path = require('path');
 const io = require('socket.io')(server, {
     cors: {
         origin: process.env.FRONTEND_URL || "http://localhost:3000",
@@ -16,33 +17,24 @@ const io = require('socket.io')(server, {
 });
 
 app.use(express.json()); // Middleware to parse JSON bodies
+app.use('/logo', express.static(path.join(__dirname, 'logo')));
+
 
 const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 const dbName = "2nest";
 let imagesCollection;
+let canvasScreenshotsCollection
 
 async function main() {
     await client.connect();
     console.log("Connected to MongoDB");
     const db = client.db(dbName);
     imagesCollection = db.collection("images");
+    canvasScreenshotsCollection = db.collection("CanvasScreenshots"); // Initialize the collection
 
-    // Image upload endpoint
-    app.post('/upload-image', 
-        // Validation checks
-        body('src').isString().withMessage('Source must be a string'),
-        body('x').isNumeric().withMessage('X coordinate must be a number'),
-        body('y').isNumeric().withMessage('Y coordinate must be a number'),
-        // ... more validations as needed ...
-        async (req, res) => {
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.status(400).json({ errors: errors.array() });
-            }
-            // Process the image upload here
-            // ...
-        });
+
+  
 
         io.on('connection', async (socket) => {
             console.log('A user connected');
@@ -61,6 +53,35 @@ async function main() {
                     console.error("Error saving image:", e);
                 }
             });
+
+            //app.post('/api/upload-canvas-image', async (req, res) => {
+                //try {
+                  //  const { image } = req.body; // This is your base64 encoded image
+                    // Save to MongoDB
+                    // You might need to create a new collection for storing these images
+                  //  const result = await canvasScreenshotsCollection.insertOne({ image });
+                   // res.status(200).json({ message: 'Image saved successfully', id: result.insertedId });
+                //} catch (error) {
+               //     console.error('Error saving canvas image:', error);
+               //     res.status(500).send('Error saving canvas image');
+             //   }
+          //  });
+
+              // Image upload endpoint
+  app.post('/upload-image', 
+    // Validation checks
+    body('src').isString().withMessage('Source must be a string'),
+    body('x').isNumeric().withMessage('X coordinate must be a number'),
+    body('y').isNumeric().withMessage('Y coordinate must be a number'),
+    // ... more validations as needed ...
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        // Process the image upload here
+        // ...
+    });
     
             socket.on('resizeAndMoveImage', async (data) => {
                 try {
@@ -99,13 +120,15 @@ async function main() {
 
     });
 
+ 
+
     const port = process.env.PORT || 3000; // Use PORT environment variable for Heroku
     server.listen(port, () => console.log(`Server running on port: ${port}`));
-
     app.use(express.static('public'));
     app.get('/', (req, res) => {
-        res.sendFile(__dirname + '/public/index.html');
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
     });
+
 }
 
 main().catch(console.error);

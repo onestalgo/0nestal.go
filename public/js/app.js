@@ -6,6 +6,15 @@ document.addEventListener('DOMContentLoaded', function () {
    const socket = io(window.location.origin);
     let images = [];
 
+    // JavaScript code for toggling the text overlay
+   // JavaScript code for toggling the text overlay
+   const aboutLink = document.getElementById("aboutLink");
+   const popupWindow = document.getElementById("popupWindow");
+
+   aboutLink.addEventListener("click", () => {
+       popupWindow.classList.toggle("hidden");
+   });
+
     canvas.width = 1440;  // Set desired dimensions
     canvas.height = 900;
 
@@ -82,12 +91,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setupSocketListeners() {
         socket.on('initialImages', (initialImages) => {
+            let loadedImagesCount = 0;
             images = initialImages.map(imageData => {
                 const img = new Image();
+                img.onload = () => {
+                    loadedImagesCount++;
+                    if (loadedImagesCount === initialImages.length) {
+                        drawImages();
+                    }
+                };
                 img.src = imageData.src;
                 return {...imageData, img};
             });
-            drawImages();
         });
     
         socket.on('imageUpdate', data => {
@@ -180,6 +195,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+
     
 
 
@@ -306,6 +323,44 @@ function enterFullScreenMode() {
     }
 }
 
+function captureCanvas() {
+    const canvas = document.getElementById('canvas');
+    const scaleFactor = 0.5; // Adjust this factor to reduce the image size
+
+    // Create a temporary canvas to draw the scaled-down image
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width * scaleFactor;
+    tempCanvas.height = canvas.height * scaleFactor;
+
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCtx.scale(scaleFactor, scaleFactor);
+    tempCtx.drawImage(canvas, 0, 0);
+
+    // Adjust the quality (0.1 to 1.0, lower means smaller size)
+    return tempCanvas.toDataURL('image/jpeg', 0.5); 
+}
+
+function uploadCanvasImage(imageData) {
+    fetch('/api/upload-canvas-image', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ image: imageData })
+    })
+    .then(response => response.json())
+    .then(data => console.log('Canvas image uploaded:', data))
+    .catch(error => console.error('Error uploading canvas image:', error));
+}
+
+// Set an interval to capture and upload the canvas image
+setInterval(() => {
+    const canvasImage = captureCanvas();
+    // Send this image to the server
+    uploadCanvasImage(canvasImage);
+}, 26400000); // 5 hours in milliseconds (5 * 60 * 60 * 1000)
+
    
+
 });
 

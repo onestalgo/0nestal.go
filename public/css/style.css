@@ -1,4 +1,9 @@
 /* Resets */
+h1 {
+    font-family: 'Arial';
+    font-size: medium;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -8,13 +13,13 @@ html, body {
 /* Default styles */
 #canvas-container {
     overflow: auto;
-    height: 100vh; /* Default for non-mobile devices */
+    height: calc(100vh - 30px); /* Adjust for the header height */
 }
 
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     #canvas-container {
-        height: 110vh;
+        height: calc(110vh - 30px); /* Adjust for the header height */
     }
 }
 
@@ -23,11 +28,52 @@ canvas {
     background-color: hsl(0, 0%, 89%); /* Optional: for visibility */
 }
 
-/* Styles for the upload button */
-#uploadButton {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    padding: 10px;
-    z-index: 10; /* Makes sure the button is above the canvas */
+/* Styles for the header */
+#header {
+    background-color: #ffffff; /* Background color for the header */
+    color: #000000; /* Text color for the header */
+    height: 30px; /* Height of the header */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+#logo img {
+    height: 30px; /* Adjust the height of the logo as needed */
+    width: 100px;
+}
+
+#aboutLink {
+    color: #000000;
+    text-decoration: none;
+    margin-right: 20px;
+}
+
+#uploadButtonContainer {
+    background-color: aquamarine;
+    position: relative;
+    z-index: 10;
+}
+
+.popup-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60vw;
+    height: 60vh;
+    background-color: white;
+    border: 1px solid #ccc;
+    z-index: 2; /* Set a higher z-index to appear on top of canvas */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    text-align: left;
+}
+
+.hidden {
+    display: none;
 }
