@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const uploadButton = document.getElementById('uploadButton');
+    const fileInput = document.getElementById('fileInput');
+
    // const socket = io();
    const socket = io(window.location.origin);
     let images = [];
@@ -201,33 +203,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     uploadButton.addEventListener('click', function () {
-        let input = document.createElement('input');
-        input.type = 'file';
-        input.capture = 'environment';
-        input.accept = 'image/*'; // Accept only image files
-    
-        input.onchange = e => {
-            const file = e.target.files[0];
-    
-            if (!file || !file.type.startsWith('image/')) {
-                alert('Please upload a valid image file.');
-                return;
-            }
-    
-            // Define a size limit, e.g., 5MB
-            const sizeLimit = 5 * 1024 * 1024; // 5MB in bytes
-    
-            if (file.size > sizeLimit) {
-                alert('The file is too large. Please upload an image smaller than 5MB.');
-                return;
-            }
-    
-            compressAndUploadImage(file);
-        };
-    
-        input.click();
+        fileInput.click(); // Open the hidden file input
     });
 
+    fileInput.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        // Check if the file is an image
+        if (!file.type.startsWith('image/')) {
+            alert('Please upload a valid image file.');
+            return;
+        }
+
+        // Define a size limit, e.g., 5MB
+        const sizeLimit = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > sizeLimit) {
+            alert('The file is too large. Please upload an image smaller than 5MB.');
+            return;
+        }
+
+        compressAndUploadImage(file);
+    };
+    
     function updateOrAddImage(data) {
         const index = images.findIndex(image => image.src === data.src);
         if (index !== -1) {
