@@ -13,13 +13,13 @@ html, body {
 /* Default styles */
 #canvas-container {
     overflow: auto;
-    height: calc(100vh - 35px); /* Adjust for the header height */
+    height: calc(100vh - 40px); /* Adjust for the header height */
 }
 
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     #canvas-container {
-        height: calc(150vh - 35px); /* Adjust for the header height */
+        height: calc(80% - 40px); /* Adjust for the header height */
     }
 }
 
@@ -32,7 +32,7 @@ canvas {
 #header {
     background-color: #ffffff; /* Background color for the header */
     color: #000000; /* Text color for the header */
-    height: 35px; /* Height of the header */
+    height: 40px; /* Height of the header */
     display: flex;
     justify-content: space-between;
     align-items: center;

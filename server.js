@@ -24,14 +24,14 @@ const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 const dbName = "2nest";
 let imagesCollection;
-let canvasScreenshotsCollection
+//let canvasScreenshotsCollection
 
 async function main() {
     await client.connect();
     console.log("Connected to MongoDB");
     const db = client.db(dbName);
     imagesCollection = db.collection("images");
-    canvasScreenshotsCollection = db.collection("CanvasScreenshots"); // Initialize the collection
+   // canvasScreenshotsCollection = db.collection("CanvasScreenshots"); // Initialize the collection
 
 
   

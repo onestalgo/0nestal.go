@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
    const socket = io(window.location.origin);
     let images = [];
 
+    
+
     // JavaScript code for toggling the text overlay
    // JavaScript code for toggling the text overlay
    const aboutLink = document.getElementById("aboutLink");
