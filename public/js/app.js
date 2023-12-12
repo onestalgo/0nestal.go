@@ -283,32 +283,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let hasScrolled = false;
 
-window.addEventListener('scroll', () => {
-    if (!hasScrolled) {
-        enterFullScreenMode();
-        hasScrolled = true;
+    window.addEventListener('scroll', handleScroll);
 
-        // Adjust the canvas height after the toolbar is hidden
-        const canvasContainer = document.getElementById('canvas-container');
-        canvasContainer.style.height = '100vh'; // Adjust this value as needed
+    function handleScroll() {
+        if (!hasScrolled) {
+            enterFullScreenMode();
+            hasScrolled = true;
+    
+            // Adjust the canvas height after the toolbar is hidden
+            const canvasContainer = document.getElementById('canvas-container');
+            canvasContainer.style.height = '100vh'; // Adjust this value as needed
+    
+            // Remove the scroll listener since it's no longer needed
+            window.removeEventListener('scroll', handleScroll);
+    
+            // Add a click listener to the document to bring back the toolbar
+            document.addEventListener('click', handleClick);
+        }
     }
-});
-
-function enterFullScreenMode() {
-    // Get the document's root element
-    var docElement = document.documentElement;
-
-    // Check for each browser's specific full-screen method and call it
-    if (docElement.requestFullscreen) {
-        docElement.requestFullscreen();
-    } else if (docElement.mozRequestFullScreen) { /* Firefox */
-        docElement.mozRequestFullScreen();
-    } else if (docElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-        docElement.webkitRequestFullscreen();
-    } else if (docElement.msRequestFullscreen) { /* IE/Edge */
-        docElement.msRequestFullscreen();
+    
+    function handleClick() {
+        exitFullScreenMode();
+        hasScrolled = false;
+    
+        // Re-attach the scroll listener to hide the toolbar on next scroll
+        window.addEventListener('scroll', handleScroll);
+    
+        // Remove the click listener since it's no longer needed
+        document.removeEventListener('click', handleClick);
     }
-}
+    
+    function enterFullScreenMode() {
+        var docElement = document.documentElement;
+        // ... Fullscreen mode entry code ...
+    }
+    
+    function exitFullScreenMode() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+    }
 
 function captureCanvas() {
     const canvas = document.getElementById('canvas');
