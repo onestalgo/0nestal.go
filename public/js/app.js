@@ -316,7 +316,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function enterFullScreenMode() {
         var docElement = document.documentElement;
         // ... Fullscreen mode entry code ...
+    
+        // Optionally, modify the header's style when in full screen
+        var header = document.getElementById('header');
+        if (header) {
+            // For example, fix the header to the top
+            header.style.position = 'fixed';
+            header.style.top = '0';
+            header.style.width = '100%';
+        }
     }
+    
     
     function exitFullScreenMode() {
         if (document.exitFullscreen) {
@@ -328,6 +338,12 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (document.msExitFullscreen) { /* IE/Edge */
             document.msExitFullscreen();
         }
+
+        var header = document.getElementById('header');
+        if (header) {
+            header.style.position = 'static'; // Reset position
+        }
+    
     }
 
 function captureCanvas() {

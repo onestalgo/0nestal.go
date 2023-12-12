@@ -19,7 +19,7 @@ html, body {
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     #canvas-container {
-        height: calc(80% - 40px); /* Adjust for the header height */
+        height: calc(130vh - 40px); /* Adjust for the header height */
     }
 }
 
@@ -30,6 +30,7 @@ canvas {
 
 /* Styles for the header */
 #header {
+    z-index: 1000;
     background-color: #ffffff; /* Background color for the header */
     color: #000000; /* Text color for the header */
     height: 40px; /* Height of the header */
