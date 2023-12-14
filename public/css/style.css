@@ -25,7 +25,7 @@ html, body {
 
 canvas {
     display: block; /* Remove extra space around the canvas */
-    background-color: hsl(0, 0%, 89%); /* Optional: for visibility */
+    background-color: hsl(180, 11%, 96%); /* Optional: for visibility */
 }
 
 /* Styles for the header */
@@ -38,11 +38,12 @@ canvas {
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+    opacity: 0.6;
 }
 
 #logo img {
-    height: 35px; /* Adjust the height of the logo as needed */
-    width: 100px;
+    height: 40px; /* Adjust the height of the logo as needed */
+    width: 120px;
 }
 
 #about {
