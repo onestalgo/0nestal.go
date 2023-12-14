@@ -28,57 +28,45 @@ canvas {
     background-color: hsl(180, 11%, 96%); /* Optional: for visibility */
 }
 
-/* Styles for the header */
-#header {
-    z-index: 1000;
-    background-color: #ffffff; /* Background color for the header */
-    color: #000000; /* Text color for the header */
-    height: 40px; /* Height of the header */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    opacity: 0.6;
-}
 
-#logo img {
-    height: 40px; /* Adjust the height of the logo as needed */
-    width: 120px;
-}
 
-#about {
-    margin-top: auto;
-}
-
-#aboutLink {
-    color: #000000;
-    text-decoration: none;
-    margin-right: 20px;
-    
-}
-
-#uploadButtonContainer {
-    background-color: aquamarine;
-    position: relative;
-    z-index: 10;
-}
-
-.popup-window {
+#button-container {
     position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+#uploadButton, #aboutButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px; /* Spacing between buttons */
+}
+
+#uploadButton img, #aboutButton img {
+    width: 50px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+/* Popup Window Styles */
+.popup-window {
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60vw;
-    height: 60vh;
-    background-color: white;
+    background: white;
     border: 1px solid #ccc;
-    z-index: 2; /* Set a higher z-index to appear on top of canvas */
     padding: 20px;
+    width: 80vw;
+    height: 60vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: block; /* Start hidden */
 }
 
 .popup-content {
-    text-align: left;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .hidden {

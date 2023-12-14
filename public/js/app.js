@@ -13,12 +13,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // JavaScript code for toggling the text overlay
    // JavaScript code for toggling the text overlay
-   const aboutLink = document.getElementById("aboutLink");
-   const popupWindow = document.getElementById("popupWindow");
+   const aboutButton = document.getElementById("aboutButton");
+    const popupWindow = document.getElementById("popupWindow");
 
-   aboutLink.addEventListener("click", () => {
-       popupWindow.classList.toggle("hidden");
-   });
+    aboutButton.addEventListener("click", () => {
+        popupWindow.classList.toggle("hidden");
+    });
 
     canvas.width = 1440;  // Set desired dimensions
     canvas.height = 900;
