@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function compressAndUploadImage(file) {
-        compressImage(file, 800, 800, 0.7, (compressedBlob) => {
+        compressImage(file, 500, 500, 0.6, (compressedBlob) => {
             let reader = new FileReader();
             reader.onload = function (event) {
                 let img = new Image();
