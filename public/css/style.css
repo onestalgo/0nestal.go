@@ -12,8 +12,10 @@ html, body {
 
 /* Default styles */
 #canvas-container {
+    position: relative; /* Needed for absolute positioning inside */
     overflow: auto;
     height: 100vh; /* Adjust for the header height */
+   /* z-index: 1; */
 }
 
 /* Mobile-specific styles */
@@ -26,6 +28,7 @@ html, body {
 canvas {
     display: block; /* Remove extra space around the canvas */
     background-color: hsl(180, 11%, 96%); /* Optional: for visibility */
+    z-index: 1;
 }
 
 
@@ -36,6 +39,7 @@ canvas {
     left: 10px;
     display: flex;
     flex-direction: column;
+    z-index: 2;
 }
 
 #uploadButton, #aboutButton {
@@ -62,6 +66,7 @@ canvas {
     height: 60vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: block; /* Start hidden */
+    z-index: 3;
 }
 
 .popup-content {
@@ -71,4 +76,33 @@ canvas {
 
 .hidden {
     display: none;
+}
+
+#introVideo {
+    height: 70vh; /* Set video height */
+    width: auto; /* Adjust width to maintain aspect ratio */
+    position: relative; /* Needed for absolute positioning */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: none; /* Start hidden */
+}
+#playButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 3px solid black; /* Thick black border */
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    display: none; /* Initially hidden */
+}
+
+/* Adjust the size and position of the video container */
+#videoContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
 }

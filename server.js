@@ -18,6 +18,7 @@ const io = require('socket.io')(server, {
 
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use('/logo', express.static(path.join(__dirname, 'logo')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 
 const uri = process.env.MONGO_URI;
