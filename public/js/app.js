@@ -7,18 +7,26 @@ document.addEventListener('DOMContentLoaded', function () {
    // const socket = io();
    const socket = io(window.location.origin);
     let images = [];
-
-    const toolbar = document.getElementById('toolbar'); // Adjust based on your toolbar's ID
+    
+    
+    const toolbar = document.getElementById('toolbar'); // Replace with your toolbar's ID
     const canvasContainer = document.getElementById('canvas-container');
+
     function adjustCanvasHeight() {
         const toolbarHeight = toolbar.offsetHeight;
         canvasContainer.style.height = `calc(100vh - ${toolbarHeight}px)`;
     }
 
-    // Call the function on load and window resize
-    adjustCanvasHeight();
-    window.addEventListener('resize', adjustCanvasHeight);
-    
+    // Check if the screen width is that of a mobile device
+    // You can adjust the max-width value to suit your needs
+    const mobileWidth = 768; // pixels
+
+    if (window.innerWidth <= mobileWidth) {
+        // Adjust height on load and on window resize, but only for mobile
+        adjustCanvasHeight();
+        window.addEventListener('resize', adjustCanvasHeight);
+    }
+
 
     // JavaScript code for toggling the text overlay
    // JavaScript code for toggling the text overlay
