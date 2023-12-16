@@ -24,7 +24,10 @@ html, body {
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     
     #canvas-container {
-        height: calc(100vh - 60px);
+        height: calc(200% - 60px);
+        overflow: auto;
+        display: flex;
+
     }
 
 
