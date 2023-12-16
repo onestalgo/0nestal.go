@@ -266,71 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(file);
     }
 
-    let hasScrolled = false;
-
-    window.addEventListener('scroll', handleScroll);
-
-    function handleScroll() {
-        if (!hasScrolled) {
-            enterFullScreenMode();
-            hasScrolled = true;
-    
-            // Adjust the canvas height after the toolbar is hidden
-            const canvasContainer = document.getElementById('canvas-container');
-            canvasContainer.style.height = '100vh'; // Adjust this value as needed
-    
-            // Remove the scroll listener since it's no longer needed
-            window.removeEventListener('scroll', handleScroll);
-    
-            // Add a click listener to the document to bring back the toolbar
-            document.addEventListener('click', handleClick);
-        }
-    }
-    
-    function handleClick() {
-        exitFullScreenMode();
-        hasScrolled = false;
-    
-        // Re-attach the scroll listener to hide the toolbar on next scroll
-        window.addEventListener('scroll', handleScroll);
-    
-        // Remove the click listener since it's no longer needed
-        document.removeEventListener('click', handleClick);
-    }
-    
-    function enterFullScreenMode() {
-        var docElement = document.documentElement;
-        // ... Fullscreen mode entry code ...
-    
-        // Optionally, modify the header's style when in full screen
-        var header = document.getElementById('header');
-        if (header) {
-            // For example, fix the header to the top
-            header.style.position = 'fixed';
-            header.style.top = '0';
-            header.style.width = '100%';
-        }
-    }
-    
-    
-    function exitFullScreenMode() {
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else if (document.mozCancelFullScreen) { /* Firefox */
-            document.mozCancelFullScreen();
-        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-            document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE/Edge */
-            document.msExitFullscreen();
-        }
-
-        var header = document.getElementById('header');
-        if (header) {
-            header.style.position = 'static'; // Reset position
-        }
-    
-    }
-
+   
 function captureCanvas() {
     const canvas = document.getElementById('canvas');
     const scaleFactor = 0.5; // Adjust this factor to reduce the image size
