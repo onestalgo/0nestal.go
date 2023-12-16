@@ -23,6 +23,31 @@ html, body {
     #canvas-container {
         height: calc(110vh); /* Adjust for the header height */
     }
+
+    #mobilePlayButton {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: white;
+        color: black;
+        font-size: 16px; /* Adjust as needed */
+        padding: 15px 30px; /* Adjust for size */
+        border: none;
+        border-radius: 5px; /* Rounded corners */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the button */
+        text-transform: uppercase; /* Uppercase text */
+        font-weight: bold; /* Bold font */
+    }
+
+    /* Hide the button initially */
+    #mobilePlayButton {
+        display: none;
+    }
 }
 
 canvas {

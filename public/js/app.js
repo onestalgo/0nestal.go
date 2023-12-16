@@ -21,21 +21,32 @@ document.addEventListener('DOMContentLoaded', function () {
     });
    
     const introVideo = document.getElementById('introVideo');
+    const videoContainer = document.getElementById('videoContainer');
+    const mobilePlayButton = document.getElementById('mobilePlayButton');
 
     if (!localStorage.getItem('hasVisited')) {
-       // New visitor
-       introVideo.style.display = 'block'; // Show the video
-        introVideo.play().catch(error => {
-            console.log("Autoplay prevented: ", error.message);
-        });
-
         localStorage.setItem('hasVisited', 'true');
+        videoContainer.style.display = 'flex'; // Show the video container
 
+        const canAutoplay = introVideo.play();
+        if (canAutoplay !== undefined) {
+            canAutoplay.catch(error => {
+                // Autoplay was prevented
+                console.log("Autoplay prevented: ", error.message);
+                // Show play button for mobile
+                mobilePlayButton.style.display = 'block';
+            });
+        }
     }
 
+    mobilePlayButton.addEventListener('click', function() {
+        introVideo.play();
+        mobilePlayButton.style.display = 'none';
+    });
+
     introVideo.onended = function() {
-        introVideo.style.display = 'none';
-        };
+        videoContainer.style.display = 'none'; // Hide the video container
+    };
 
 
     canvas.width = 1440;  // Set desired dimensions
