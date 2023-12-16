@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-
     const uploadButton = document.getElementById('uploadButton');
     const fileInput = document.getElementById('fileInput');
 
@@ -9,11 +8,21 @@ document.addEventListener('DOMContentLoaded', function () {
    const socket = io(window.location.origin);
     let images = [];
 
+    const toolbar = document.getElementById('toolbar'); // Adjust based on your toolbar's ID
+    const canvasContainer = document.getElementById('canvas-container');
+    function adjustCanvasHeight() {
+        const toolbarHeight = toolbar.offsetHeight;
+        canvasContainer.style.height = `calc(100vh - ${toolbarHeight}px)`;
+    }
+
+    // Call the function on load and window resize
+    adjustCanvasHeight();
+    window.addEventListener('resize', adjustCanvasHeight);
     
 
     // JavaScript code for toggling the text overlay
    // JavaScript code for toggling the text overlay
-   const aboutButton = document.getElementById("aboutButton");
+    const aboutButton = document.getElementById("aboutButton");
     const popupWindow = document.getElementById("popupWindow");
 
     aboutButton.addEventListener("click", () => {
