@@ -22,26 +22,20 @@ document.addEventListener('DOMContentLoaded', function () {
    
     const introVideo = document.getElementById('introVideo');
 
-    // Check if the visitor is new
     if (!localStorage.getItem('hasVisited')) {
-        // New visitor
-        introVideo.style.display = 'block'; // Show the video
+       // New visitor
+       introVideo.style.display = 'block'; // Show the video
         introVideo.play().catch(error => {
             console.log("Autoplay prevented: ", error.message);
-            // Handle the autoplay prevention here, if necessary.
         });
 
-        // Set the flag in local storage for future visits
         localStorage.setItem('hasVisited', 'true');
+
     }
 
-    // The video will be hidden by default for returning visitors due to CSS.
-
-    // Add event listener to hide video after it's done playing
     introVideo.onended = function() {
         introVideo.style.display = 'none';
-    };
-
+        };
 
 
     canvas.width = 1440;  // Set desired dimensions
