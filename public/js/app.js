@@ -18,53 +18,43 @@ document.addEventListener('DOMContentLoaded', function () {
         popupWindow.classList.toggle("hidden");
     });
    
-    const videoContainer = document.getElementById('videoContainer');
     const introVideo = document.getElementById('introVideo');
+    const videoContainer = document.getElementById('videoContainer');
     const mobilePlayButton = document.getElementById('mobilePlayButton');
 
-    // Function to detect mobile device
-    function isMobileDevice() {
-        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
-    };
-
-    // Play video function with autoplay handling
-    function playVideo() {
-        const promise = introVideo.play();
-
-        if (promise !== undefined) {
-            promise.then(_ => {
-                // Autoplay started successfully
-                console.log("Autoplay started");
-            }).catch(error => {
-                // Autoplay was prevented
-                console.log("Autoplay prevented: ", error.message);
-                mobilePlayButton.style.display = 'block'; // Show mobile play button
-            });
-        }
+    const canAutoplay = introVideo.play();
+    if (canAutoplay !== undefined) {
+        canAutoplay.catch(error => {
+            // Autoplay was prevented
+            console.log("Autoplay prevented: ", error.message);
+            // Show play button for mobile
+            mobilePlayButton.style.display = 'flex';
+        });
     }
 
-    // Check for first-time visitors
+
     if (!localStorage.getItem('hasVisited')) {
-        localStorage.setItem('hasVisited', 'true'); // Set the flag in local storage
+        localStorage.setItem('hasVisited', 'true');
+        videoContainer.style.display = 'flex'; // Show the video container
 
-        videoContainer.style.display = 'block'; // Show the video container
-
-        if (!isMobileDevice()) {
-            // Attempt to autoplay for non-mobile devices
-            playVideo();
-        } else {
-            // Mobile device behavior
-            mobilePlayButton.style.display = 'block'; // Show mobile play button
+        const canAutoplay = introVideo.play();
+        if (canAutoplay !== undefined) {
+            canAutoplay.catch(error => {
+                // Autoplay was prevented
+                console.log("Autoplay prevented: ", error.message);
+                // Show play button for mobile
+                mobilePlayButton.style.display = 'block';
+            });
         }
     }
 
     mobilePlayButton.addEventListener('click', function() {
         introVideo.play();
-        mobilePlayButton.style.display = 'none'; // Hide the button after playing
+        mobilePlayButton.style.display = 'none';
     });
 
     introVideo.onended = function() {
-        videoContainer.style.display = 'none'; // Hide the video container after it ends
+        videoContainer.style.display = 'none'; // Hide the video container
     };
 
     let lastTouchX, lastTouchY;
