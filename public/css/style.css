@@ -24,13 +24,24 @@ html, body {
 @media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
     
  #canvas-container {
-    height: calc(100vh - 70px);
+   height: 100vh;
+    position: relative;
+    overflow: hidden;
  }
 
- /*   #canvas {
-        height: calc(100vh - 60px);
+    #canvas {
+        position: absolute;
+        left: 0;
+        top: 0;
     }
-*/
+
+    #button-container {
+        position: fixed; /* Keep buttons visible */
+        top: 10px; /* Adjust as needed */
+        left: 10px; /* Adjust as needed */
+        z-index: 10; /* Above the canvas */
+    }
+
 
     #mobilePlayButton {
         display: flex;
@@ -64,6 +75,10 @@ canvas {
     z-index: 1;
 }
 
+#mobilePlayButton {
+    display: none; /* Initially hidden */
+    /* Other styling as needed */
+}
 
 
 #button-container {

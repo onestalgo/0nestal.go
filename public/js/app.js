@@ -18,33 +18,91 @@ document.addEventListener('DOMContentLoaded', function () {
         popupWindow.classList.toggle("hidden");
     });
    
-    const introVideo = document.getElementById('introVideo');
     const videoContainer = document.getElementById('videoContainer');
+    const introVideo = document.getElementById('introVideo');
     const mobilePlayButton = document.getElementById('mobilePlayButton');
 
-    if (!localStorage.getItem('hasVisited')) {
-        localStorage.setItem('hasVisited', 'true');
-        videoContainer.style.display = 'flex'; // Show the video container
+    // Function to detect mobile device
+    function isMobileDevice() {
+        return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
+    };
 
-        const canAutoplay = introVideo.play();
-        if (canAutoplay !== undefined) {
-            canAutoplay.catch(error => {
+    // Play video function with autoplay handling
+    function playVideo() {
+        const promise = introVideo.play();
+
+        if (promise !== undefined) {
+            promise.then(_ => {
+                // Autoplay started successfully
+                console.log("Autoplay started");
+            }).catch(error => {
                 // Autoplay was prevented
                 console.log("Autoplay prevented: ", error.message);
-                // Show play button for mobile
-                mobilePlayButton.style.display = 'block';
+                mobilePlayButton.style.display = 'block'; // Show mobile play button
             });
+        }
+    }
+
+    // Check for first-time visitors
+    if (!localStorage.getItem('hasVisited')) {
+        localStorage.setItem('hasVisited', 'true'); // Set the flag in local storage
+
+        videoContainer.style.display = 'block'; // Show the video container
+
+        if (!isMobileDevice()) {
+            // Attempt to autoplay for non-mobile devices
+            playVideo();
+        } else {
+            // Mobile device behavior
+            mobilePlayButton.style.display = 'block'; // Show mobile play button
         }
     }
 
     mobilePlayButton.addEventListener('click', function() {
         introVideo.play();
-        mobilePlayButton.style.display = 'none';
+        mobilePlayButton.style.display = 'none'; // Hide the button after playing
     });
 
     introVideo.onended = function() {
-        videoContainer.style.display = 'none'; // Hide the video container
+        videoContainer.style.display = 'none'; // Hide the video container after it ends
     };
+
+    let lastTouchX, lastTouchY;
+    const canvasContainer = document.getElementById('canvas-container');
+
+    canvasContainer.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        lastTouchX = touch.clientX;
+        lastTouchY = touch.clientY;
+    }, false);
+    
+    canvasContainer.addEventListener('touchmove', function(e) {
+        e.preventDefault(); // Prevent scrolling
+    
+        const touch = e.touches[0];
+        const dx = touch.clientX - lastTouchX;
+        const dy = touch.clientY - lastTouchY;
+        lastTouchX = touch.clientX;
+        lastTouchY = touch.clientY;
+    
+        // Calculate the new position
+        let newLeft = canvas.offsetLeft + dx;
+        let newTop = canvas.offsetTop + dy;
+    
+        // Define canvas boundaries
+        const minLeft = canvasContainer.offsetWidth - canvas.width;
+        const minTop = canvasContainer.offsetHeight - canvas.height;
+        const maxLeft = 0;
+        const maxTop = 0;
+    
+        // Apply constraints
+        newLeft = Math.min(Math.max(newLeft, minLeft), maxLeft);
+        newTop = Math.min(Math.max(newTop, minTop), maxTop);
+    
+        // Update canvas position
+        canvas.style.left = `${newLeft}px`;
+        canvas.style.top = `${newTop}px`;
+    }, false);
 
 
     canvas.width = 1440;  // Set desired dimensions
