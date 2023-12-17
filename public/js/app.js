@@ -8,7 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
    const socket = io(window.location.origin);
     let images = [];
     
+    const originalCanvasWidth = 1440;
+    const originalCanvasHeight = 900;
+    let scale = 1; // Default scale
 
+ 
     // JavaScript code for toggling the text overlay
    // JavaScript code for toggling the text overlay
     const aboutButton = document.getElementById("aboutButton");
@@ -19,84 +23,52 @@ document.addEventListener('DOMContentLoaded', function () {
     });
    
     const introVideo = document.getElementById('introVideo');
-    const videoContainer = document.getElementById('videoContainer');
-    const mobilePlayButton = document.getElementById('mobilePlayButton');
 
-    const canAutoplay = introVideo.play();
-    if (canAutoplay !== undefined) {
-        canAutoplay.catch(error => {
-            // Autoplay was prevented
-            console.log("Autoplay prevented: ", error.message);
-            // Show play button for mobile
-            mobilePlayButton.style.display = 'flex';
-        });
-    }
-
-
+    // Check if the visitor is new
     if (!localStorage.getItem('hasVisited')) {
-        localStorage.setItem('hasVisited', 'true');
-        videoContainer.style.display = 'flex'; // Show the video container
+        // New visitor
+        introVideo.style.display = 'block'; // Show the video
+        introVideo.play().catch(error => {
+            console.log("Autoplay prevented: ", error.message);
+            // Autoplay was prevented.
+            // You can optionally add custom logic here for handling this case.
+        });
 
-        const canAutoplay = introVideo.play();
-        if (canAutoplay !== undefined) {
-            canAutoplay.catch(error => {
-                // Autoplay was prevented
-                console.log("Autoplay prevented: ", error.message);
-                // Show play button for mobile
-                mobilePlayButton.style.display = 'block';
-            });
-        }
+        // Set the flag in local storage for future visits
+        localStorage.setItem('hasVisited', 'true');
+    } else {
+        // Returning visitor, hide the video
+        introVideo.style.display = 'none';
     }
 
-    mobilePlayButton.addEventListener('click', function() {
-        introVideo.play();
-        mobilePlayButton.style.display = 'none';
-    });
-
+    // Add event listener to hide video after it's done playing
     introVideo.onended = function() {
-        videoContainer.style.display = 'none'; // Hide the video container
+        introVideo.style.display = 'none';
     };
 
-    let lastTouchX, lastTouchY;
-    const canvasContainer = document.getElementById('canvas-container');
 
-    canvasContainer.addEventListener('touchstart', function(e) {
-        const touch = e.touches[0];
-        lastTouchX = touch.clientX;
-        lastTouchY = touch.clientY;
-    }, false);
+    const zoomSlider = document.getElementById('zoom-slider');
+    zoomSlider.value = scale; // Set the slider's initial value to the scale
+
+    updateCanvasSize(scale);
+
+    zoomSlider.addEventListener('input', function() {
+        scale = parseFloat(this.value);
+        updateCanvasSize(scale);
+    });
+
+      
+    function updateCanvasSize(scale) {
+        canvas.width = originalCanvasWidth * scale;
+        canvas.height = originalCanvasHeight * scale;
+        drawImages();
+    }
+ 
     
-    canvasContainer.addEventListener('touchmove', function(e) {
-        e.preventDefault(); // Prevent scrolling
-    
-        const touch = e.touches[0];
-        const dx = touch.clientX - lastTouchX;
-        const dy = touch.clientY - lastTouchY;
-        lastTouchX = touch.clientX;
-        lastTouchY = touch.clientY;
-    
-        // Calculate the new position
-        let newLeft = canvas.offsetLeft + dx;
-        let newTop = canvas.offsetTop + dy;
-    
-        // Define canvas boundaries
-        const minLeft = canvasContainer.offsetWidth - canvas.width;
-        const minTop = canvasContainer.offsetHeight - canvas.height;
-        const maxLeft = 0;
-        const maxTop = 0;
-    
-        // Apply constraints
-        newLeft = Math.min(Math.max(newLeft, minLeft), maxLeft);
-        newTop = Math.min(Math.max(newTop, minTop), maxTop);
-    
-        // Update canvas position
-        canvas.style.left = `${newLeft}px`;
-        canvas.style.top = `${newTop}px`;
-    }, false);
 
 
-    canvas.width = 1440;  // Set desired dimensions
-    canvas.height = 900;
+  //  canvas.width = 1440;  // Set desired dimensions
+   // canvas.height = 900;
 
   
     
@@ -104,9 +76,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupCanvasEventListeners() {
         canvas.addEventListener('click', function (e) {
             const rect = canvas.getBoundingClientRect();
-            const clickX = e.clientX - rect.left + window.scrollX;
-            const clickY = e.clientY - rect.top + window.scrollY;
-
+            const clickX = (e.clientX - rect.left + window.scrollX) / scale;
+            const clickY = (e.clientY - rect.top + window.scrollY) / scale;
+    
             const clickedImage = getTopmostImageAtClick(clickX, clickY);
             if (clickedImage) {
                 handleImageResizeAndAnimation(clickedImage, clickX, clickY);
@@ -125,31 +97,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         return null;
     }
-    
+  
 
+   
     
-        function handleImageResizeAndAnimation(image, clickX, clickY) {
-                if (clickX > image.x && clickX < image.x + image.width && clickY > image.y && clickY < image.y + image.height && !image.isAnimating) {
-                    const thirdWidth = image.width / 3;
-                    const leftThird = image.x + thirdWidth;
-                    const rightThird = image.x + 2 * thirdWidth;
+    function handleImageResizeAndAnimation(image, clickX, clickY) {
+        if (clickX > image.x && clickX < image.x + image.width && clickY > image.y && clickY < image.y + image.height && !image.isAnimating) {
+            const thirdWidth = image.width / 3;
+            const leftThird = image.x + thirdWidth;
+            const rightThird = image.x + 2 * thirdWidth;
     
-                    const deltaX = clickX < leftThird ? -18 : clickX > rightThird ? 18 : 0;
-                    const increase = 15;
-                    const newHeight = image.height + increase;
-                    const newWidth = newHeight * (image.img.width / image.img.height);
-                    const newCenterX = image.x + image.width / 2 + deltaX;
-                    const newX = newCenterX - newWidth / 2;
-                    const newY = image.y + (image.height - newHeight) / 2;
+            const deltaX = clickX < leftThird ? -18 : clickX > rightThird ? 18 : 0;
+            const increase = 15;
+            const newHeight = image.height + increase;
+            const newWidth = newHeight * (image.img.width / image.img.height);
+            const newCenterX = image.x + image.width / 2 + deltaX;
+            const newX = newCenterX - newWidth / 2;
+            const newY = image.y + (image.height - newHeight) / 2;
     
                     
                                  
 
-                    const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-                    drawStripedBorder(newX, newY, newWidth, newHeight, randomColor);
-                
+                    drawStripedBorder(newX, newY, newWidth, newHeight); // Updated function call
+
                     setTimeout(() => {
-                        image.x = newX;
+                        image.x = newX; // Adjust coordinates back for internal data
                         image.y = newY;
                         image.width = newWidth;
                         image.height = newHeight;
@@ -162,25 +134,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 
                 function drawStripedBorder(x, y, width, height) {
-                    const stripeWidth = 10;
-                    const stripeSpacing = 5;
+                    // Apply the current scale to the border dimensions and position
+                    const scaledX = x * scale;
+                    const scaledY = y * scale;
+                    const scaledWidth = width * scale;
+                    const scaledHeight = height * scale;
+                
+                    // Define the stripe width and spacing, scaled appropriately
+                    const stripeWidth = 10 * scale;
+                    const stripeSpacing = 5 * scale;
                     const randomColor = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
                 
                     ctx.save();
                     ctx.strokeStyle = randomColor;
-                    ctx.lineWidth = 3;
+                    ctx.lineWidth = 3 * scale; // Scale the line width
                     ctx.setLineDash([stripeWidth, stripeSpacing]);
-                    ctx.strokeRect(x, y, width, height);
+                    ctx.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
                     ctx.restore();
                 }
-
-               
-    }
+            }
    
     function checkAndDeleteImage(image) {
         const oneThirdWidth = image.width / 3;
-        const offCanvasLeft = image.x + oneThirdWidth < 0;
-        const offCanvasRight = image.x + 2 * oneThirdWidth > canvas.width;
+        const offCanvasLeft = (image.x + oneThirdWidth) * scale < 0;
+        const offCanvasRight = (image.x + 2 * oneThirdWidth) * scale > canvas.width;
     
         if (offCanvasLeft || offCanvasRight) {
             socket.emit('deleteImage', { src: image.img.src });
@@ -221,13 +198,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function drawImages() {
+        // Clear the entire canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+        // Iterate through each image and draw it on the canvas
         images.forEach(image => {
             if (!image.isAnimating && image.x > -10000 && image.y > -10000) {
-                ctx.drawImage(image.img, image.x, image.y, image.width, image.height);
+                // Calculate the dimensions and positions considering the scale
+                const scaledWidth = image.width * scale;
+                const scaledHeight = image.height * scale;
+                const scaledX = image.x * scale;
+                const scaledY = image.y * scale;
+    
+                // Draw the image on the canvas at the scaled dimensions and position
+                ctx.drawImage(image.img, scaledX, scaledY, scaledWidth, scaledHeight);
             }
         });
     }
+    
+    
 
 
     uploadButton.addEventListener('click', function () {

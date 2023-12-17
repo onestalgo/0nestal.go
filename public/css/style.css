@@ -8,6 +8,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    overflow: hidden;
 }
 
 /* Default styles */
@@ -17,62 +18,19 @@ html, body {
     height: 100vh; /* Adjust for the header height */
     margin: auto;
     overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
    /* z-index: 1; */
 }
 
-/* Mobile-specific styles */
-@media only screen and (max-width: 768px) { /* Adjust max-width as needed for your target mobile devices */
-    
- #canvas-container {
-   height: 100vh;
-    position: relative;
-    overflow: hidden;
- }
 
-    #canvas {
-        position: absolute;
-        left: 0;
-        top: 0;
-    }
-
-    #button-container {
-        position: fixed; /* Keep buttons visible */
-        top: 10px; /* Adjust as needed */
-        left: 10px; /* Adjust as needed */
-        z-index: 10; /* Above the canvas */
-    }
-
-
-    #mobilePlayButton {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: white;
-        color: black;
-        font-size: 16px; /* Adjust as needed */
-        padding: 15px 30px; /* Adjust for size */
-        border: none;
-        border-radius: 5px; /* Rounded corners */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
-        cursor: pointer;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* Center the button */
-        text-transform: uppercase; /* Uppercase text */
-        font-weight: bold; /* Bold font */
-    }
-
-    /* Hide the button initially */
-    #mobilePlayButton {
-        display: none;
-    }
-}
 
 canvas {
     display: block; /* Remove extra space around the canvas */
-    background-color: hsl(180, 11%, 96%); /* Optional: for visibility */
+    background-color: hsl(0, 0%, 92%); /* Optional: for visibility */
     z-index: 1;
+    border: 1px solid rgb(239, 191, 191);
 }
 
 #mobilePlayButton {
@@ -154,3 +112,90 @@ canvas {
     transform: translate(-50%, -50%);
     z-index: 4;
 }
+
+#zoom-container {
+    position: fixed; /* Adjust as needed */
+    bottom: 10px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Above the canvas */
+}
+
+@media only screen and (min-width: 768px) { /* Adjust the breakpoint as needed */
+    #zoom-container {
+        display: none;
+    }
+}
+
+/* Mobile-specific styles */
+@media only screen and (max-width: 768px) {
+    html, body, #canvas-container {
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        overflow: auto;
+    }
+
+    #canvas {
+        position: absolute;
+       left: 0;
+       top: 0;
+        
+    }
+
+    #button-container {
+        position: fixed;
+        top: 50%; /* Vertically center */
+        left: 10px; /* 10px from the left edge */
+        transform: translateY(-50%); /* Offset for exact vertical centering */
+
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #aboutButton, #uploadButton {
+        margin-bottom: 10px; /* Spacing between buttons */
+    }
+
+
+    #zoom-container {
+        position: fixed; /* Adjust as needed */
+        bottom: 10px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10; /* Above the canvas */
+    }
+    
+    /* Restyling the zoom slider to be white */
+    #zoom-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 200px; /* Adjust as needed */
+        height: 10px;
+        background: white; /* Slider background */
+        cursor: pointer;
+        border: 1px solid black;
+    }
+
+    #zoom-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #dcdcdc; /* Adjust thumb color as needed */
+        cursor: pointer;
+        border-radius: 0;
+        border: 2px solid black;
+    }
+
+    #zoom-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #ffffff;
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 50px;
+    }
+}
+/* Rest of the CSS remains the same */
