@@ -20,7 +20,7 @@ html, body {
     overflow: auto;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
    /* z-index: 1; */
 }
 
@@ -161,7 +161,7 @@ canvas {
 
     #zoom-container {
         position: fixed; /* Adjust as needed */
-        bottom: 10px; /* Adjust as needed */
+        bottom: 25px; /* Adjust as needed */
         left: 50%;
         transform: translateX(-50%);
         z-index: 10; /* Above the canvas */
