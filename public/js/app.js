@@ -21,11 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
     popupWindow.classList.toggle("hidden");
   });
 
-  const videoContainer = document.getElementById("videoContainer");
   const introVideo = document.getElementById("introVideo");
   const mobilePlayButton = document.getElementById("mobilePlayButton");
 
-  // Function to play video and handle autoplay issues
+  // Function to determine if the user is on a mobile device
+  function isMobileDevice() {
+    return (
+      /Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)
+    );
+  }
+
+  // Function to play the video and handle autoplay issues
   function playVideo() {
     const playPromise = introVideo.play();
 
@@ -38,8 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch((error) => {
           // Autoplay was prevented
           console.log("Autoplay prevented: ", error.message);
-          // Show the play button on mobile devices
-          mobilePlayButton.style.display = "block";
+          // Show play button on mobile devices
+          if (isMobileDevice()) {
+            mobilePlayButton.style.display = "block";
+          }
         });
     }
   }
@@ -47,13 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Check if the visitor is new
   if (!localStorage.getItem("hasVisited")) {
     localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
-    videoContainer.style.display = "block"; // Show the video container
+    introVideo.parentElement.style.display = "block"; // Show the video's parent container
 
     // Attempt to play the video
     playVideo();
   } else {
     // Returning visitor
-    videoContainer.style.display = "none"; // Hide the video container
+    introVideo.parentElement.style.display = "none"; // Hide the video's parent container
   }
 
   // Event listener for the mobile play button
@@ -62,9 +70,9 @@ document.addEventListener("DOMContentLoaded", function () {
     mobilePlayButton.style.display = "none"; // Hide the button after playing
   });
 
-  // Hide the video container when the video ends
+  // Hide the video's parent container when the video ends
   introVideo.onended = function () {
-    videoContainer.style.display = "none";
+    introVideo.parentElement.style.display = "none";
   };
 
   const zoomSlider = document.getElementById("zoom-slider");

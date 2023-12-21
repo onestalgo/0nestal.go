@@ -91,18 +91,7 @@ canvas {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: none; /* Start hidden */
 }
-#playButton {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 3px solid black; /* Thick black border */
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    display: none; /* Initially hidden */
-}
+
 
 /* Adjust the size and position of the video container */
 #videoContainer {
@@ -197,5 +186,17 @@ canvas {
         border: 1px solid black;
         border-radius: 50px;
     }
+
+    #playButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 3px solid black; /* Thick black border */
+        padding: 10px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        display: none; /* Initially hidden */
+    }
 }
-/* Rest of the CSS remains the same */
