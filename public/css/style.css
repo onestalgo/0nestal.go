@@ -89,7 +89,7 @@ canvas {
     width: auto; /* Adjust width to maintain aspect ratio */
     position: relative; /* Needed for absolute positioning */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    display: none; /* Start hidden */
+   /* display: none; /* Start hidden */
 }
 
 
