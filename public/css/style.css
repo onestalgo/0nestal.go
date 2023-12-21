@@ -187,7 +187,7 @@ canvas {
         border-radius: 50px;
     }
 
-    #playButton {
+    #mobilePlayButton {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -199,4 +199,6 @@ canvas {
         font-size: 16px;
         display: none; /* Initially hidden */
     }
+
+    
 }
