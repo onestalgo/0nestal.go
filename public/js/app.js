@@ -21,28 +21,50 @@ document.addEventListener("DOMContentLoaded", function () {
     popupWindow.classList.toggle("hidden");
   });
 
+  const videoContainer = document.getElementById("videoContainer");
   const introVideo = document.getElementById("introVideo");
+  const mobilePlayButton = document.getElementById("mobilePlayButton");
+
+  // Function to play video and handle autoplay issues
+  function playVideo() {
+    const playPromise = introVideo.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then((_) => {
+          // Autoplay started successfully
+          console.log("Autoplay started");
+        })
+        .catch((error) => {
+          // Autoplay was prevented
+          console.log("Autoplay prevented: ", error.message);
+          // Show the play button on mobile devices
+          mobilePlayButton.style.display = "block";
+        });
+    }
+  }
 
   // Check if the visitor is new
   if (!localStorage.getItem("hasVisited")) {
-    // New visitor
-    introVideo.style.display = "block"; // Show the video
-    introVideo.play().catch((error) => {
-      console.log("Autoplay prevented: ", error.message);
-      // Autoplay was prevented.
-      // You can optionally add custom logic here for handling this case.
-    });
+    localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
+    videoContainer.style.display = "block"; // Show the video container
 
-    // Set the flag in local storage for future visits
-    localStorage.setItem("hasVisited", "true");
+    // Attempt to play the video
+    playVideo();
   } else {
-    // Returning visitor, hide the video
-    introVideo.style.display = "none";
+    // Returning visitor
+    videoContainer.style.display = "none"; // Hide the video container
   }
 
-  // Add event listener to hide video after it's done playing
+  // Event listener for the mobile play button
+  mobilePlayButton.addEventListener("click", function () {
+    introVideo.play();
+    mobilePlayButton.style.display = "none"; // Hide the button after playing
+  });
+
+  // Hide the video container when the video ends
   introVideo.onended = function () {
-    introVideo.style.display = "none";
+    videoContainer.style.display = "none";
   };
 
   const zoomSlider = document.getElementById("zoom-slider");
