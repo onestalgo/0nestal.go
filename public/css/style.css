@@ -31,7 +31,6 @@ canvas {
     background-color: hsl(0, 0%, 92%); /* Optional: for visibility */
     z-index: 1;
     border: 1px solid rgb(239, 191, 191);
-    height: 100vh
 }
 
 #mobilePlayButton {
@@ -102,17 +101,19 @@ canvas {
     z-index: 4;
 }
 
-#zoom-container {
-    position: fixed; /* Adjust as needed */
-    bottom: 10px; /* Adjust as needed */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10; /* Above the canvas */
-}
+
 
 @media only screen and (min-width: 768px) { /* Adjust the breakpoint as needed */
     #zoom-container {
         display: none;
+    }
+
+    #zoom-container {
+        position: fixed; /* Adjust as needed */
+        bottom: 10px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10; /* Above the canvas */
     }
 }
 
