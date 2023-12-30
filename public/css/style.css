@@ -31,6 +31,7 @@ canvas {
     background-color: hsl(0, 0%, 92%); /* Optional: for visibility */
     z-index: 1;
     border: 1px solid rgb(239, 191, 191);
+    height: 100vh
 }
 
 #mobilePlayButton {
@@ -128,6 +129,7 @@ canvas {
         position: absolute;
        left: 0;
        top: 0;
+       height: 100vh;
         
     }
 

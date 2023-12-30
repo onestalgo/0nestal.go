@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const socket = io(window.location.origin);
   let images = [];
 
-  const originalCanvasWidth = 1440;
+  const originalCanvasWidth = 1500;
   const originalCanvasHeight = 900;
   let scale = 1; // Default scale
 
