@@ -52,10 +52,15 @@ async function main() {
     });
 
     socket.on("lockImage", (data) => {
-      // Broadcast the lock event to all clients except the one that initiated the lock
+      // Broadcast the lock event
       socket.broadcast.emit("lockImage", data);
-    });
 
+      // Set a timeout to automatically unlock the image
+      setTimeout(() => {
+        // Emit unlock event after timeout (e.g., 10 seconds)
+        io.emit("unlockImage", data);
+      }, 800); // Adjust the timeout duration as needed
+    });
     //app.post('/api/upload-canvas-image', async (req, res) => {
     //try {
     //  const { image } = req.body; // This is your base64 encoded image
