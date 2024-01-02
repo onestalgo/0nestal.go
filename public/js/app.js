@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // const socket = io();
   const socket = io(window.location.origin);
   let images = [];
+  images = images.map((img) => ({ ...img, locked: false }));
 
   const originalCanvasWidth = 1550;
   const originalCanvasHeight = 820;
@@ -131,6 +132,15 @@ document.addEventListener("DOMContentLoaded", function () {
       clickY < image.y + image.height &&
       !image.isAnimating
     ) {
+      if (image.locked) {
+        console.log("Image is currently being processed by another user");
+        return; // Exit if the image is already locked
+      }
+
+      socket.emit("lockImage", { src: image.img.src });
+
+      image.locked = true; // Lock the image
+
       const thirdWidth = image.width / 3;
       const leftThird = image.x + thirdWidth;
       const rightThird = image.x + 2 * thirdWidth;
@@ -146,6 +156,9 @@ document.addEventListener("DOMContentLoaded", function () {
       drawStripedBorder(newX, newY, newWidth, newHeight); // Updated function call
 
       setTimeout(() => {
+        image.locked = false;
+        socket.emit("unlockImage", { src: image.img.src }); // Unlock the image across all clients
+
         image.x = newX; // Adjust coordinates back for internal data
         image.y = newY;
         image.width = newWidth;
@@ -229,6 +242,20 @@ document.addEventListener("DOMContentLoaded", function () {
       if (indexToDelete !== -1) {
         images.splice(indexToDelete, 1);
         drawImages();
+      }
+    });
+
+    socket.on("lockImage", (data) => {
+      const image = images.find((img) => img.src === data.src);
+      if (image) {
+        image.locked = true;
+      }
+    });
+
+    socket.on("unlockImage", (data) => {
+      const image = images.find((img) => img.src === data.src);
+      if (image) {
+        image.locked = false;
       }
     });
   }
