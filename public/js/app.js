@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const socket = io(window.location.origin);
   let images = [];
 
-  const originalCanvasWidth = 1500;
-  const originalCanvasHeight = 900;
+  const originalCanvasWidth = 1550;
+  const originalCanvasHeight = 820;
   let scale = 1; // Default scale
 
   // JavaScript code for toggling the text overlay
