@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Check and delete the image if it's off the canvas after resizing
         checkAndDeleteImage(image);
         drawImages;
-      }, 300);
+      }, 400);
     }
 
     function drawStripedBorder(x, y, width, height) {
