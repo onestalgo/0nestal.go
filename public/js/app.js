@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let images = [];
   images = images.map((img) => ({ ...img, locked: false }));
 
-  const originalCanvasWidth = 1550;
+  const originalCanvasWidth = 1500;
   const originalCanvasHeight = 880;
   let scale = 1; // Default scale
 
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith("image/")) return;
 
-    const sizeLimit = 5 * 1024 * 1024; // 5MB in bytes
+    const sizeLimit = 10 * 1024 * 1024; // 5MB in bytes
     if (file.size > sizeLimit) {
       alert("File is too large.");
       return;
