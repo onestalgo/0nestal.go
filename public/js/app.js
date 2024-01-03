@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   images = images.map((img) => ({ ...img, locked: false }));
 
   const originalCanvasWidth = 1550;
-  const originalCanvasHeight = 820;
+  const originalCanvasHeight = 880;
   let scale = 1; // Default scale
 
   // JavaScript code for toggling the text overlay
