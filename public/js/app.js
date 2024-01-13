@@ -22,9 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
     popupWindow.classList.toggle("hidden");
   });
 
-  const introVideo = document.getElementById("introVideo");
-  const mobilePlayButton = document.getElementById("mobilePlayButton");
-
   // Function to determine if the user is on a mobile device
   function isMobileDevice() {
     return (
@@ -38,58 +35,24 @@ document.addEventListener("DOMContentLoaded", function () {
     scale = 1; // Set scale for non-mobile devices
   }
 
-  // Function to play the video and handle autoplay issues
-  function playVideo() {
-    const playPromise = introVideo.play();
-
-    if (playPromise !== undefined) {
-      playPromise
-        .then((_) => {
-          // Autoplay started successfully
-          console.log("Autoplay started");
-        })
-        .catch((error) => {
-          // Autoplay was prevented
-          console.log("Autoplay prevented: ", error.message);
-          // Show play button on mobile devices
-          if (isMobileDevice()) {
-            mobilePlayButton.style.display = "block";
-          }
-        });
-    }
+  // Check if it's the user's first visit
+  if (!localStorage.getItem("hasVisited")) {
+    localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
+    showPopup(); // Show the popup window on first visit
   }
 
-  // Function to check if the visitor is new and show the popup
-  function handleFirstVisit() {
-    if (!localStorage.getItem("hasVisited")) {
-      localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
-      showPopup(); // Show the popup window
-    }
+  function showPopup() {
+    document.getElementById("popupWrapper").style.display = "block";
   }
 
   // Function to hide the popup window
   function hidePopup() {
-    document.getElementById("popupContainer").style.display = "none";
+    document.getElementById("popupWrapper").style.display = "none";
   }
 
   // Event listener for the close button
   document.getElementById("closePopup").addEventListener("click", function () {
     hidePopup();
-  });
-
-  // Function to show the popup window
-  function showPopup() {
-    document.getElementById("popupContainer").style.display = "block";
-  }
-
-  // Event listener for the close button
-  document.getElementById("closePopup").addEventListener("click", function () {
-    document.getElementById("popupContainer").style.display = "none";
-  });
-
-  // Call handleFirstVisit when the DOM is fully loaded
-  document.addEventListener("DOMContentLoaded", function () {
-    handleFirstVisit();
   });
 
   const zoomSlider = document.getElementById("zoom-slider");

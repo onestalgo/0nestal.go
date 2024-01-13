@@ -84,23 +84,74 @@ canvas {
     display: none;
 }
 
-#introVideo {
-    height: 70vh; /* Set video height */
-    width: auto; /* Adjust width to maintain aspect ratio */
-    position: relative; /* Needed for absolute positioning */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-
-/* Adjust the size and position of the video container */
-#videoContainer {
+/* Style for the popup wrapper */
+#popupWrapper {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 4;
+    z-index: 1001; /* Higher z-index to ensure it's above the popup */
 }
 
+/* Style for the popup container */
+#popupContainer {
+    width: 80%; /* Increased width */
+    max-width: 500px; /* Larger maximum width */
+    height: 80%; /* Increased height */
+    max-height: 500px; /* Larger maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border-radius: 5px; /* Smaller border radius */
+    font-family: Arial, sans-serif; /* Arial font */
+    /* Other styles remain the same */
+}
+
+/* Style for the close button */
+#closePopup {
+    position: absolute;
+    top: 5px; /* Adjust as necessary */
+    right: 70px; /* Adjust as necessary */
+    font-size: 30px; /* Size of the cross */
+    color: black; /* Color of the cross */
+    background-color: white; /* Background of the button */
+    border-radius: 10px; /* Circle shape */
+    padding: 2px;
+    cursor: pointer;
+}
+
+/* Styles for the popupContent, videos, etc., remain the same */
+
+
+
+/* Style for the popup content */
+#popupContent {
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+/* Style for videos inside the popup */
+#popupContent video {
+    width: 100%; /* Full width of the container */
+    height: auto; /* Maintain aspect ratio */
+    margin-top: 10px; /* Space between videos */
+}
+
+/* Responsive adjustments for smaller screens, e.g., mobile devices */
+@media screen and (max-width: 600px) {
+    #popupContainer {
+        width: 40vh; /* Adjust width for smaller screens */
+        max-width: none; /* Allow it to grow as wide as 90% of the screen */
+        height: auto; /* Let the height be determined by the content */
+        max-height: 60vh; /* Limit the maximum height */
+    }
+
+    /* Adjust the close button position for mobile */
+    #closePopup {
+        top: 5px; /* Adjust as necessary */
+        right: 10px; /* Adjust as necessary */
+    }
+}
 
 
 @media only screen and (min-width: 768px) { /* Adjust the breakpoint as needed */
@@ -188,19 +239,7 @@ canvas {
         border-radius: 50px;
     }
 
-    #mobilePlayButton {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: white;
-        border: 3px solid black; /* Thick black border */
-        border-radius: 15px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 16px;
-        display: none; /* Initially hidden */
-    }
+
 
     
 }
