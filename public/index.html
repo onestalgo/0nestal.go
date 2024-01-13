@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EMFXWVFE0L"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-EMFXWVFE0L');
-</script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
@@ -25,16 +16,31 @@
     </div>
 
     <div id="zoom-container">
-        <input type="range" id="zoom-slider" min="0.28" max="1.8" step="0.2" value="1">
+        <input type="range" id="zoom-slider" min="0.28" max="1.8" step="0.2" value="0.28">
     </div>
 
     
-    <div id="videoContainer">
-        <video id="introVideo" width="720" height="1280" autoplay muted preload="auto">
-               <source src="/public/IntroGoodLight.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-       <button id="mobilePlayButton">INTRODUCTION</button> 
+    <div id="popupContainer" style="display: none;">
+        <div id="popupContent">
+            <span id="closePopup" style="cursor: pointer;">&times;</span> <!-- Close button -->
+
+            <p>WELCOME TO ONESTALGO
+                <br>
+                Onestalgo is a collective and evolutive canvas composed by images uploaded by users.
+                <br>
+                Take place on it !
+            </p>
+            <br>
+            <p>Upload an image on the canvas, click it to grow it</p>
+            <video autoplay muted loop><source src="/public/step1.mp4" type="video/mp4"></video>
+            <p>Youcan click all the images composing the canvas</p>
+            <video autoplay muted loop><source src="/public/step2.mp4" type="video/mp4"></video>
+            <p>Contemplate the canvas evolving in real time.</p>
+            <video autoplay muted loop><source src="/public/step3.mp4" type="video/mp4"></video>
+            <p>When a third of your image reaches off the canvas, it's erased, off the database.</p>
+            <video autoplay muted loop><source src="/public/step4light.mp4" type="video/mp4"></video>
+            <p>Click to play !</p>
+        </div>
     </div>
    
 

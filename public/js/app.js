@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const originalCanvasWidth = 1500;
   const originalCanvasHeight = 880;
-  let scale = 1; // Default scale
+  let scale; // Scale will be set based on the device
 
   // JavaScript code for toggling the text overlay
   // JavaScript code for toggling the text overlay
@@ -30,6 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
     return (
       /Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent)
     );
+  }
+  // Set the initial scale based on the device type
+  if (isMobileDevice()) {
+    scale = 0.28; // Set scale for mobile devices
+  } else {
+    scale = 1; // Set scale for non-mobile devices
   }
 
   // Function to play the video and handle autoplay issues
@@ -53,28 +59,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Check if the visitor is new
-  if (!localStorage.getItem("hasVisited")) {
-    localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
-    introVideo.parentElement.style.display = "block"; // Show the video's parent container
-
-    // Attempt to play the video
-    playVideo();
-  } else {
-    // Returning visitor
-    introVideo.parentElement.style.display = "none"; // Hide the video's parent container
+  // Function to check if the visitor is new and show the popup
+  function handleFirstVisit() {
+    if (!localStorage.getItem("hasVisited")) {
+      localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
+      showPopup(); // Show the popup window
+    }
   }
 
-  // Event listener for the mobile play button
-  mobilePlayButton.addEventListener("click", function () {
-    introVideo.play();
-    mobilePlayButton.style.display = "none"; // Hide the button after playing
+  // Function to hide the popup window
+  function hidePopup() {
+    document.getElementById("popupContainer").style.display = "none";
+  }
+
+  // Event listener for the close button
+  document.getElementById("closePopup").addEventListener("click", function () {
+    hidePopup();
   });
 
-  // Hide the video's parent container when the video ends
-  introVideo.onended = function () {
-    introVideo.parentElement.style.display = "none";
-  };
+  // Function to show the popup window
+  function showPopup() {
+    document.getElementById("popupContainer").style.display = "block";
+  }
+
+  // Event listener for the close button
+  document.getElementById("closePopup").addEventListener("click", function () {
+    document.getElementById("popupContainer").style.display = "none";
+  });
+
+  // Call handleFirstVisit when the DOM is fully loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    handleFirstVisit();
+  });
 
   const zoomSlider = document.getElementById("zoom-slider");
   zoomSlider.value = scale; // Set the slider's initial value to the scale
