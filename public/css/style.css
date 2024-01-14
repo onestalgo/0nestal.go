@@ -241,6 +241,30 @@ canvas {
     scrollbar-color: darkgray lightgray; /* Thumb and track color */
 }
 
+@media screen and (max-width: 768px) {
+    .custom-scrollbar {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 16px; /* Thicker scrollbar */
+        background: lightgray;
+        border-radius: 8px;
+        opacity: 0.7;
+    }
+
+    #popupWrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+    #popupContent {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        height: 100%; /* Adjust as needed */
+        padding-right: 20px; /* Space for scrollbar */
+    }
+}
+
 /* Ensuring the scrollbar is always visible on mobile */
 @media screen and (max-width: 768px) {
     #popupWrapper {

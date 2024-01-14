@@ -40,6 +40,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  var content = document.getElementById("popupContent");
+  var customScrollbar = document.getElementById("customScrollbar");
+
+  function updateScrollbar() {
+    var contentHeight = content.scrollHeight;
+    var visibleHeight = content.clientHeight;
+    var scrollbarHeight = (visibleHeight / contentHeight) * visibleHeight;
+    customScrollbar.style.height = scrollbarHeight + "px";
+  }
+
+  content.addEventListener("scroll", function () {
+    var scrollPosition = content.scrollTop;
+    var scrollbarPosition =
+      (scrollPosition / content.scrollHeight) * content.clientHeight;
+    customScrollbar.style.top = scrollbarPosition + "px";
+  });
+
+  // Initial update and on window resize
+  updateScrollbar();
+  window.addEventListener("resize", updateScrollbar);
+
   // Function to determine if the user is on a mobile device
   function isMobileDevice() {
     return (
