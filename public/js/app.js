@@ -35,26 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
     scale = 1; // Set scale for non-mobile devices
   }
 
-  // Check if it's the user's first visit
-  if (!localStorage.getItem("hasVisited")) {
-    localStorage.setItem("hasVisited", "true"); // Set the flag in local storage
-    showPopup(); // Show the popup window on first visit
-  }
-
-  function showPopup() {
-    document.getElementById("popupWrapper").style.display = "block";
-  }
-
-  // Function to hide the popup window
-  function hidePopup() {
-    document.getElementById("popupWrapper").style.display = "none";
-  }
-
-  // Event listener for the close button
-  document.getElementById("closePopup").addEventListener("click", function () {
-    hidePopup();
-  });
-
   const zoomSlider = document.getElementById("zoom-slider");
   zoomSlider.value = scale; // Set the slider's initial value to the scale
 
@@ -69,6 +49,24 @@ document.addEventListener("DOMContentLoaded", function () {
     canvas.width = originalCanvasWidth * scale;
     canvas.height = originalCanvasHeight * scale;
     drawImages();
+  }
+
+  function showPopup() {
+    document.getElementById("popupWrapper").style.display = "block";
+  }
+
+  function hidePopup() {
+    document.getElementById("popupWrapper").style.display = "none";
+  }
+
+  document.getElementById("closePopup").addEventListener("click", function () {
+    hidePopup();
+    localStorage.setItem("hasVisited", "true"); // Set the flag when the popup is closed
+  });
+
+  // Check if it's the user's first visit
+  if (!localStorage.getItem("hasVisited")) {
+    showPopup(); // Show the popup window on first visit
   }
 
   //  canvas.width = 1440;  // Set desired dimensions
