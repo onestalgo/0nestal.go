@@ -18,8 +18,26 @@ document.addEventListener("DOMContentLoaded", function () {
   const aboutButton = document.getElementById("aboutButton");
   const popupWindow = document.getElementById("popupWindow");
 
-  aboutButton.addEventListener("click", () => {
+  // Function to toggle the visibility of the popup
+  function togglePopup() {
     popupWindow.classList.toggle("hidden");
+  }
+
+  // Open popup on about button click
+  aboutButton.addEventListener("click", togglePopup);
+
+  // Close popup when clicking outside of it
+  document.addEventListener("click", function (event) {
+    // Check if the click is outside the popupWindow
+    if (
+      !popupWindow.contains(event.target) &&
+      !aboutButton.contains(event.target)
+    ) {
+      // Only hide if the popupWindow is not already hidden
+      if (!popupWindow.classList.contains("hidden")) {
+        popupWindow.classList.add("hidden");
+      }
+    }
   });
 
   // Function to determine if the user is on a mobile device
