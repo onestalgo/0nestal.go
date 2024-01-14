@@ -52,22 +52,26 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showPopup() {
+    console.log("Showing popup");
     document.getElementById("popupWrapper").style.display = "block";
   }
 
   function hidePopup() {
+    console.log("Hiding popup");
     document.getElementById("popupWrapper").style.display = "none";
+  }
+
+  if (!localStorage.getItem("hasVisited")) {
+    console.log("First visit");
+    showPopup();
+  } else {
+    console.log("Not first visit");
   }
 
   document.getElementById("closePopup").addEventListener("click", function () {
     hidePopup();
-    localStorage.setItem("hasVisited", "true"); // Set the flag when the popup is closed
+    localStorage.setItem("hasVisited", "true");
   });
-
-  // Check if it's the user's first visit
-  if (!localStorage.getItem("hasVisited")) {
-    showPopup(); // Show the popup window on first visit
-  }
 
   //  canvas.width = 1440;  // Set desired dimensions
   // canvas.height = 900;
