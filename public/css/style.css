@@ -119,10 +119,6 @@ canvas {
     cursor: pointer;
 }
 
-/* Styles for the popupContent, videos, etc., remain the same */
-
-
-
 /* Style for the popup content */
 #popupContent {
     background: white;
@@ -130,13 +126,37 @@ canvas {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-
-/* Style for videos inside the popup */
-#popupContent video {
+/* Style for GIFs inside the popup */
+#popupContent img {
     width: 100%; /* Full width of the container */
     height: auto; /* Maintain aspect ratio */
-    margin-top: 10px; /* Space between videos */
+    margin-top: 10px; /* Space between GIFs */
 }
+
+/* Style for the welcome message */
+#popupContent .welcome-message {
+    text-align: center; /* Center-align the text */
+    font-size: 24px; /* Larger font size */
+    font-weight: bold; /* Optional: if you want the text to be bold */
+    margin-top: 10px; /* Spacing at the top */
+    margin-bottom: 20px; /* Spacing at the bottom */
+}
+
+#popupContent .instruction-text {
+    margin-bottom: 5px; /* Reduce space below the paragraph */
+}
+
+#popupContent img {
+    margin-top: 5px; /* Reduce space above the GIF */
+}
+#popupContent .clickable-logo {
+    display: block; /* Or inline-block, depending on your layout */
+    margin: 2px auto; /* Center the logo and add some margin */
+    cursor: pointer; /* Change cursor to indicate it's clickable */
+    width: 200px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+
 
 /* Responsive adjustments for smaller screens, e.g., mobile devices */
 @media screen and (max-width: 600px) {

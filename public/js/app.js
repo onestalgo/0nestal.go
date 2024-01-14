@@ -51,28 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
     drawImages();
   }
 
-  // Function to play all videos
-  function playVideos() {
-    const videos = document.querySelectorAll("#popupContent video");
-    videos.forEach((video) => {
-      video.play().catch((error) => {
-        console.error("Error attempting to play video:", error);
-      });
-    });
-  }
-
-  // Variable to track if the videos have been played
-  let videosPlayed = false;
-
-  // Event listener for scrolling in the popup container
-  document
-    .getElementById("popupContent")
-    .addEventListener("scroll", function () {
-      if (!videosPlayed) {
-        playVideos();
-        videosPlayed = true; // Set the flag so videos are only played once
-      }
-    });
+  document.getElementById("closeLogo").addEventListener("click", function () {
+    document.getElementById("popupWrapper").style.display = "none";
+  });
 
   function showPopup() {
     console.log("Showing popup");
