@@ -51,16 +51,28 @@ document.addEventListener("DOMContentLoaded", function () {
     drawImages();
   }
 
-  const videos = document.querySelectorAll("video[autoplay]");
-  videos.forEach((video) => {
-    // Mute the video
-    video.muted = true;
-
-    // Attempt to play the video
-    video.play().catch((error) => {
-      console.error("Error attempting to play video:", error);
+  // Function to play all videos
+  function playVideos() {
+    const videos = document.querySelectorAll("#popupContent video");
+    videos.forEach((video) => {
+      video.play().catch((error) => {
+        console.error("Error attempting to play video:", error);
+      });
     });
-  });
+  }
+
+  // Variable to track if the videos have been played
+  let videosPlayed = false;
+
+  // Event listener for scrolling in the popup container
+  document
+    .getElementById("popupContent")
+    .addEventListener("scroll", function () {
+      if (!videosPlayed) {
+        playVideos();
+        videosPlayed = true; // Set the flag so videos are only played once
+      }
+    });
 
   function showPopup() {
     console.log("Showing popup");
