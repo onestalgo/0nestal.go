@@ -59,7 +59,6 @@ canvas {
     width: 50px; /* Adjust the width as needed */
     height: auto; /* Maintain aspect ratio */
 }
-/* Style for the popup window */
 .popup-window {
     position: fixed;
     top: 50%;
@@ -80,14 +79,15 @@ canvas {
 .popup-content {
     overflow-y: auto; /* Allow vertical scrolling */
     height: 100%; /* Set to the full height of the popup window */
-    padding-right: 20px; /* Space between text and scrollbar */
     font-family: Arial, sans-serif; /* Arial font */
     font-size: large; /* Larger font size */
     line-height: 1.5; /* Adjust line spacing */
+    padding-right: 20px; /* Space between text and scrollbar */
 }
 
 .popup-content p, .popup-content h1 {
     font-weight: normal;
+    margin-bottom: 15px; /* Space below paragraphs */
 }
 
 .popup-content img {
@@ -96,28 +96,27 @@ canvas {
     max-width: 100%; /* Ensure image does not exceed container width */
 }
 
-
-/* Webkit browsers such as Chrome, Safari */
-.popup-content::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-
+/* Scrollbar Styles for Webkit Browsers */
+.popup-content::-webkit-scrollbar, .popup-window::-webkit-scrollbar, #popupContainer::-webkit-scrollbar {
+    width: 12px;
 }
 
-.popup-content::-webkit-scrollbar-track {
-    background: lightgray; /* Background of the track */
-    border-radius: 6px; /* Rounded corners for the track */
+.popup-content::-webkit-scrollbar-track, .popup-window::-webkit-scrollbar-track, #popupContainer::-webkit-scrollbar-track {
+    background: lightgray;
+    border-radius: 6px;
 }
 
-.popup-content::-webkit-scrollbar-thumb {
-    background-color: darkgray; /* Color of the thumb */
-    border-radius: 6px; /* Rounded corners for the thumb */
+.popup-content::-webkit-scrollbar-thumb, .popup-window::-webkit-scrollbar-thumb, #popupContainer::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+    border-radius: 6px;
 }
 
-/* Firefox */
-.popup-content {
-    scrollbar-width: thin; /* 'auto' or 'thin' are also options */
-    scrollbar-color: darkgray lightgray; /* Thumb and track color */
+/* Scrollbar Styles for Firefox */
+.popup-content, .popup-window, #popupContainer {
+    scrollbar-width: thin;
+    scrollbar-color: darkgray lightgray;
 }
+
 
 .hidden {
     display: none;
