@@ -246,9 +246,12 @@ canvas {
     #popupWrapper {
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS devices */
         overflow-y: scroll; /* Force scrollbar to be visible */
-         width: 16px; /* Thicker scrollbar for visibility */
         
     }
+
+    #popupWrapper::-webkit-scrollbar {
+        width: 16px; /* Thicker scrollbar for visibility */
+    }   
 }
 
 /* Responsive adjustments for smaller screens, e.g., mobile devices */
