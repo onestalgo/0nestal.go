@@ -51,6 +51,17 @@ document.addEventListener("DOMContentLoaded", function () {
     drawImages();
   }
 
+  const videos = document.querySelectorAll("video[autoplay]");
+  videos.forEach((video) => {
+    // Mute the video
+    video.muted = true;
+
+    // Attempt to play the video
+    video.play().catch((error) => {
+      console.error("Error attempting to play video:", error);
+    });
+  });
+
   function showPopup() {
     console.log("Showing popup");
     document.getElementById("popupWrapper").style.display = "block";
