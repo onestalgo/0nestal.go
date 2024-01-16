@@ -33,11 +33,6 @@ canvas {
     border: 1px solid rgb(239, 191, 191);
 }
 
-#mobilePlayButton {
-    display: none; /* Initially hidden */
-    /* Other styling as needed */
-}
-
 
 #button-container {
     position: absolute;
@@ -87,6 +82,27 @@ canvas {
     line-height: 1.5; /* Adjust line spacing */
 }
 
+.popup-content::-webkit-scrollbar,
+#popupContainer::-webkit-scrollbar,
+#popupWrapper::-webkit-scrollbar {
+    width: 16px;
+    background-color: rgba(0,0,0,0.1);
+}
+
+.popup-content::-webkit-scrollbar-thumb,
+#popupContainer::-webkit-scrollbar-thumb,
+#popupWrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 8px;
+}
+
+.popup-content,
+#popupContainer,
+#popupWrapper {
+    scrollbar-width: auto;
+    scrollbar-color: rgba(0,0,0,0.4) rgba(0,0,0,0.1);
+}
+
 .popup-content p, .popup-content h1 {
     font-weight: normal; 
 }
@@ -97,22 +113,6 @@ canvas {
     max-width: 100%; /* Ensure image does not exceed container width */
 }
 
-
-/* Webkit browsers such as Chrome, Safari */
-.popup-content::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-
-}
-
-.popup-content::-webkit-scrollbar-track {
-    background: lightgray; /* Background of the track */
-    border-radius: 6px; /* Rounded corners for the track */
-}
-
-.popup-content::-webkit-scrollbar-thumb {
-    background-color: darkgray; /* Color of the thumb */
-    border-radius: 6px; /* Rounded corners for the thumb */
-}
 
 /* Firefox */
 .popup-content {
@@ -198,6 +198,7 @@ canvas {
     height: auto; /* Maintain aspect ratio */
 }
 
+
 /* Webkit Browsers (Chrome, Safari) */
 #popupContainer::-webkit-scrollbar {
     width: 12px; /* Width of the scrollbar */
@@ -213,21 +214,17 @@ canvas {
     border-radius: 6px; /* Rounded corners for the thumb */
 }
 
-/* Firefox */
+/* Firefox scrollbar styles for popupContainer */
 #popupContainer {
-    scrollbar-width: thin; /* 'auto', 'thin', or 'none' */
-    scrollbar-color: darkgray lightgray; /* Thumb and track color */
-}
-
+    scrollbar-width: thin;
+    scrollbar-color: darkgray lightgray;
+    }
 /* Style for the popup wrapper's scrollbar */
 #popupWrapper::-webkit-scrollbar {
-    width: 16px; /* Thicker scrollbar for visibility */
-}
-
-#popupWrapper::-webkit-scrollbar-track {
-    background: lightgray; /* Track color */
-    border-radius: 8px; /* Smooth rounded corners for the track */
-}
+    width: 16px;
+    background: lightgray;
+    border-radius: 8px;
+    }
 
 #popupWrapper::-webkit-scrollbar-thumb {
     background-color: darkgray; /* Thumb color */
@@ -241,29 +238,7 @@ canvas {
     scrollbar-color: darkgray lightgray; /* Thumb and track color */
 }
 
-@media screen and (max-width: 768px) {
-    .custom-scrollbar {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 16px; /* Thicker scrollbar */
-        background: lightgray;
-        border-radius: 8px;
-        opacity: 0.7;
-    }
 
-    #popupWrapper {
-        position: relative;
-        overflow: hidden;
-    }
-
-    #popupContent {
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        height: 100%; /* Adjust as needed */
-        padding-right: 20px; /* Space for scrollbar */
-    }
-}
 
 /* Ensuring the scrollbar is always visible on mobile */
 @media screen and (max-width: 768px) {
