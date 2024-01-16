@@ -112,8 +112,13 @@ canvas {
 .step {
     display: none; /* Hide all steps initially */
     background-color: white; /* White background for each step */
+    position: absolute; /* Absolutely position each step */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the container */
     height: 100%; /* Full height of the container */
     overflow-y: auto; /* Allow vertical scrolling within each step */
+    padding: 20px; /* Optional padding for content */
 }
 
 .step.active {
@@ -140,14 +145,15 @@ canvas {
 
 /* Style for the popup container */
 #popupContainer {
-    width: 80%;
+    width: 60vh;
     max-width: 500px;
-    height: 80%;
+    height: 60vh;
     max-height: 500px;
     overflow-y: hidden;
     border-radius: 5px;
     font-family: Arial, sans-serif;
     border: 1px solid black;
+    position: relative;
 }
 
 /* Style for the close button */
