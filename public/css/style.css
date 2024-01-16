@@ -72,36 +72,30 @@ canvas {
     overflow: hidden; /* Hide overflow */
 }
 
-/* Style for the popup content */
-.popup-content {
-    overflow-y: auto; /* Allow vertical scrolling */
-    height: 100%; /* Full height of the popup window */
-    padding-right: 20px; /* Space between text and scrollbar */
-    font-family: Arial, sans-serif; /* Arial font */
-    font-size: large; /* Larger font size */
-    line-height: 1.5; /* Adjust line spacing */
-}
-
+/* Scrollbar Styles for Webkit Browsers (Chrome, Safari) */
 .popup-content::-webkit-scrollbar,
 #popupContainer::-webkit-scrollbar,
 #popupWrapper::-webkit-scrollbar {
-    width: 16px;
-    background-color: rgba(0,0,0,0.1);
+    width: 16px; /* Adjust the width to make it more prominent */
+    background-color: rgba(0, 0, 0, 0.2); /* Slightly visible background */
 }
 
 .popup-content::-webkit-scrollbar-thumb,
 #popupContainer::-webkit-scrollbar-thumb,
 #popupWrapper::-webkit-scrollbar-thumb {
-    background-color: rgba(0,0,0,0.4);
+    background-color: #333; /* Darker color for visibility */
     border-radius: 8px;
 }
 
+/* Scrollbar Styles for Firefox */
 .popup-content,
 #popupContainer,
 #popupWrapper {
-    scrollbar-width: auto;
-    scrollbar-color: rgba(0,0,0,0.4) rgba(0,0,0,0.1);
+    scrollbar-width: thick; /* 'auto', 'thin', or 'thick' */
+    scrollbar-color: #333 rgba(0, 0, 0, 0.2); /* Darker thumb color and track color */
 }
+
+
 
 .popup-content p, .popup-content h1 {
     font-weight: normal; 
@@ -245,12 +239,15 @@ canvas {
     #popupWrapper {
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS devices */
         overflow-y: scroll; /* Force scrollbar to be visible */
-        
     }
 
     #popupWrapper::-webkit-scrollbar {
-        width: 16px; /* Thicker scrollbar for visibility */
-    }   
+        width: 20px; /* Even thicker scrollbar for better visibility on mobile */
+    }
+
+    #popupWrapper::-webkit-scrollbar-thumb {
+        background-color: #333; /* Keeping the thumb color consistent */
+    }
 }
 
 /* Responsive adjustments for smaller screens, e.g., mobile devices */
