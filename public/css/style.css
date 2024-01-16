@@ -111,6 +111,9 @@ canvas {
 
 .step {
     display: none; /* Hide all steps initially */
+    background-color: white; /* White background for each step */
+    height: 100%; /* Full height of the container */
+    overflow-y: auto; /* Allow vertical scrolling within each step */
 }
 
 .step.active {
@@ -141,7 +144,7 @@ canvas {
     max-width: 500px;
     height: 80%;
     max-height: 500px;
-    overflow-y: auto;
+    overflow-y: hidden;
     border-radius: 5px;
     font-family: Arial, sans-serif;
     border: 1px solid black;
