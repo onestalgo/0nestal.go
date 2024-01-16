@@ -95,6 +95,26 @@ document.addEventListener("DOMContentLoaded", function () {
     localStorage.setItem("hasVisited", "true");
   });
 
+  let currentStep = 1;
+  const totalSteps = 6; // Updated to 6 steps
+  showStep(currentStep);
+
+  document.querySelectorAll(".next-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (currentStep < totalSteps) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+  });
+
+  function showStep(step) {
+    document.querySelectorAll(".step").forEach((div) => {
+      div.classList.remove("active");
+    });
+    document.getElementById(`step${step}`).classList.add("active");
+  }
+
   //  canvas.width = 1440;  // Set desired dimensions
   // canvas.height = 900;
 
