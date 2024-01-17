@@ -105,11 +105,13 @@ canvas {
     border-radius: 5px;
     width: 80%; /* Consistent width for all steps */
     max-width: 500px; /* Adjust max-width as needed */
-    min-height: 300px; /* Consistent minimum height */
+    max-height: 80vh; /* Maximum height to fit in the viewport */
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     position: relative;
-    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distributes space between content and button */
 }
 
 
@@ -127,7 +129,9 @@ canvas {
 }
 
 .step {
-    display: none;
+    display: none; /* Hide steps initially */
+    flex: 1; /* Allows step to expand and utilize available space */
+    overflow-y: auto; /* Scroll inside step if content overflows */
 }
 
 .step.active {
@@ -157,15 +161,14 @@ canvas {
 }
 
 .next-btn {
-    width: 100%;
     padding: 10px;
-    background-color: white; /* Changed to white */
-    color: black; /* Text color changed to black */
-    border: 2px solid black; /* Black border added */
+    background-color: white;
+    color: black;
+    border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
-    font-family: Arial, sans-serif; /* Ensure consistent font */
-    font-size: medium; /* Adjust the font size as needed */
+    font-family: Arial, sans-serif;
+    font-size: medium;
 }
 
 
