@@ -69,7 +69,7 @@ canvas {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     display: block; /* Ensure it's displayed */
     z-index: 3;
-    overflow: hidden; /* Hide overflow */
+    overflow: auto; /* Hide overflow */
 }
 
 .popup-content p, .popup-content h1 {
