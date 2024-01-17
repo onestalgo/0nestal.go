@@ -1,7 +1,7 @@
-
+/* Resets */
 h1 {
     font-family: 'Arial';
-    font-size: x-large;
+    font-size:x-large;
 }
 
 html, body {
@@ -13,21 +13,26 @@ html, body {
 
 /* Default styles */
 #canvas-container {
-    position: relative;
+    position: relative; /* Needed for absolute positioning inside */
     overflow: auto;
-    height: 100vh;
+    height: 100vh; /* Adjust for the header height */
     margin: auto;
+    overflow: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+   /* z-index: 1; */
 }
 
+
+
 canvas {
-    display: block;
-    background-color: hsl(0, 0%, 92%);
+    display: block; /* Remove extra space around the canvas */
+    background-color: hsl(0, 0%, 92%); /* Optional: for visibility */
     z-index: 1;
     border: 1px solid rgb(239, 191, 191);
 }
+
 
 #button-container {
     position: absolute;
@@ -42,15 +47,15 @@ canvas {
     background: none;
     border: none;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Spacing between buttons */
 }
 
 #uploadButton img, #aboutButton img {
-    width: 50px;
-    height: auto;
+    width: 50px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
 }
-
 /* Popup Window Styles */
+/* Style for the popup window */
 .popup-window {
     position: fixed;
     top: 50%;
@@ -59,34 +64,12 @@ canvas {
     background: white;
     border: 1px solid #ccc;
     padding: 20px;
-    width: 60vw;
-    height: 60vh;
+    width: 60vw; /* Adjust width as needed */
+    height: 60vh; /* Adjust height as needed */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: block; /* Ensure it's displayed */
     z-index: 3;
-    overflow: auto;
-}
-
-/* Scrollbar Styles for Webkit Browsers (Chrome, Safari) */
-.popup-content::-webkit-scrollbar,
-#popupContainer::-webkit-scrollbar,
-#popupWrapper::-webkit-scrollbar {
-    width: 16px;
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-.popup-content::-webkit-scrollbar-thumb,
-#popupContainer::-webkit-scrollbar-thumb,
-#popupWrapper::-webkit-scrollbar-thumb {
-    background-color: #333;
-    border-radius: 8px;
-}
-
-/* Scrollbar Styles for Firefox */
-.popup-content,
-#popupContainer,
-#popupWrapper {
-    scrollbar-width: thick;
-    scrollbar-color: #333 rgba(0, 0, 0, 0.2);
+    overflow: hidden; /* Hide overflow */
 }
 
 .popup-content p, .popup-content h1 {
@@ -99,76 +82,55 @@ canvas {
     max-width: 100%;
 }
 
-/* Firefox */
-.popup-content {
-    scrollbar-width: thin;
-    scrollbar-color: darkgray lightgray;
-}
-
 .hidden {
     display: none;
 }
 
-.step {
-    display: none; /* Hide all steps initially */
-    background-color: white; /* White background for each step */
-    position: absolute; /* Absolutely position each step */
-    top: 0;
-    left: 0;
-    width: 100%; /* Full width of the container */
-    height: 100%; /* Full height of the container */
-    overflow-y: auto; /* Allow vertical scrolling within each step */
-    padding: 20px; /* Optional padding for content */
-}
-
-.step.active {
-    display: block; /* Show only the active step */
-}
-
-/* Other styles remain the same */
-
-
-/* Hide zoom slider on larger screens */
-#zoom-container {
-    display: none; /* Initially hidden */
-}
-
-/* Style for the popup wrapper */
 #popupWrapper {
     display: none;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1001;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
 }
 
 /* Style for the popup container */
 #popupContainer {
-    width: 60vh;
-    max-width: 500px;
-    height: 60vh;
-    max-height: 500px;
-    overflow-y: hidden;
+    background: white;
+    padding: 20px;
     border-radius: 5px;
-    font-family: Arial, sans-serif;
-    border: 1px solid black;
+    width: 80%;
+    max-width: 500px;
+    overflow-y: auto;
     position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
 }
 
 /* Style for the close button */
 #closePopup {
     position: absolute;
-    top: 5px;
-    right: 70px;
-    font-size: 30px;
-    color: black;
-    background-color: white;
-    border-radius: 10px;
+    top: 5px; /* Adjust as necessary */
+    right: 70px; /* Adjust as necessary */
+    font-size: 30px; /* Size of the cross */
+    color: black; /* Color of the cross */
+    background-color: white; /* Background of the button */
+    border-radius: 10px; /* Circle shape */
     padding: 2px;
     cursor: pointer;
 }
 
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
 /* Style for the popup content */
 #popupContent {
     background: white;
@@ -176,173 +138,145 @@ canvas {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Style for GIFs inside the popup */
-#popupContent img {
+#popupContainer, .popup-content p, .popup-content h1 {
+    font-family: Arial, sans-serif; /* Set font for all text in the popup */
+    font-size: large; /* Set general font size */
+}
+
+/* Specific style for the welcome message in Step 1 */
+#step1 .welcome-message {
+    font-weight: bold; /* Make the text bold */
+    font-size: x-large; /* Set the size to extra large */
+}
+
+.welcome-message, .instruction-text {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.next-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: white; /* Changed to white */
+    color: black; /* Text color changed to black */
+    border: 2px solid black; /* Black border added */
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif; /* Ensure consistent font */
+    font-size: medium; /* Adjust the font size as needed */
+}
+
+
+img {
     width: 100%;
     height: auto;
-    margin-top: 10px;
-}
-
-/* Style for the welcome message */
-#popupContent .welcome-message
-{
-text-align: center;
-font-size: 24px;
-font-weight: bold;
-margin-top: 10px;
-margin-bottom: 20px;
-}
-
-#popupContent .instruction-text {
-margin-bottom: 5px;
-}
-
-#popupContent img {
-margin-top: 5px;
-}
-
-#popupContent .clickable-logo {
-display: block;
-margin: -12px auto;
-cursor: pointer;
-width: 270px;
-height: auto;
-}
-
-/* Webkit Browsers (Chrome, Safari) */
-#popupContainer::-webkit-scrollbar {
-width: 12px;
-background: rgb(229, 229, 229);
-border-radius: 6px;
-}
-
-#popupContainer::-webkit-scrollbar-thumb {
-background-color: darkgray;
-border-radius: 6px;
-}
-
-/* Firefox scrollbar styles for popupContainer */
-#popupContainer {
-scrollbar-width: thin;
-scrollbar-color: darkgray lightgray;
-}
-
-/* Style for the popup wrapper's scrollbar */
-#popupWrapper::-webkit-scrollbar {
-width: 16px;
-background: lightgray;
-border-radius: 8px;
-}
-
-#popupWrapper::-webkit-scrollbar-thumb {
-background-color: darkgray;
-border-radius: 8px;
-border: 3px solid lightgray;
-}
-
-/* Firefox scrollbar styles */
-#popupWrapper {
-scrollbar-width: thick;
-scrollbar-color: darkgray lightgray;
-}
-
-/* Ensuring the scrollbar is always visible on mobile */
-@media screen and (max-width: 768px) {
-#popupWrapper {
--webkit-overflow-scrolling: touch;
-overflow-y: scroll;
-}
-
-#popupWrapper::-webkit-scrollbar {
-    width: 20px;
-}
-
-#popupWrapper::-webkit-scrollbar-thumb {
-    background-color: #333;
-}
+    border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 /* Responsive adjustments for smaller screens, e.g., mobile devices */
 @media screen and (max-width: 600px) {
-#popupContainer {
-width: 90%;
-max-width: none;
-height: auto;
-max-height: 60vh;
+    #popupContainer {
+        width: 90%; /* Adjust width for smaller screens */
+        max-width: none; /* Allow it to grow as wide as 90% of the screen */
+        height: auto; /* Let the height be determined by the content */
+        max-height: 60vh; /* Limit the maximum height */
+    }
+
+    /* Adjust the close button position for mobile */
+    #closePopup {
+        top: 5px; /* Adjust as necessary */
+        right: 18px; /* Adjust as necessary */
+    }
 }
 
-/* Adjust the close button position for mobile */
-#closePopup {
-    top: 5px;
-    right: 18px;
-}
-}
 
+@media only screen and (min-width: 768px) { /* Adjust the breakpoint as needed */
+    #zoom-container {
+        display: none;
+    }
 
+    #zoom-container {
+        position: fixed; /* Adjust as needed */
+        bottom: 10px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10; /* Above the canvas */
+    }
+}
 
 /* Mobile-specific styles */
 @media only screen and (max-width: 768px) {
-html, body, #canvas-container {
-height: 100vh;
-width: 100vw;
-overflow: auto;
-}
+    html, body, #canvas-container {
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        overflow: auto;
+    }
 
-#canvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-}
+    #canvas {
+        position: absolute;
+       left: 0;
+       top: 0;
+        
+    }
 
-#button-container {
-    position: fixed;
-    top: 50%;
-    left: 10px;
-    transform: translateY(-50%);
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-}
+    #button-container {
+        position: fixed;
+        top: 50%; /* Vertically center */
+        left: 10px; /* 10px from the left edge */
+        transform: translateY(-50%); /* Offset for exact vertical centering */
 
-#aboutButton, #uploadButton {
-    margin-bottom: 10px;
-}
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+    }
 
-#zoom-container {
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-}
+    #aboutButton, #uploadButton {
+        margin-bottom: 10px; /* Spacing between buttons */
+    }
 
-#zoom-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 200px;
-    height: 10px;
-    background: white;
-    cursor: pointer;
-    border: 1px solid black;
-}
 
-#zoom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 25px;
-    height: 25px;
-    background: #dcdcdc;
-    cursor: pointer;
-    border-radius: 0;
-    border: 2px solid black;
-}
+    #zoom-container {
+        position: fixed; /* Adjust as needed */
+        bottom: 25px; /* Adjust as needed */
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10; /* Above the canvas */
+    }
+    
+    /* Restyling the zoom slider to be white */
+    #zoom-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 200px; /* Adjust as needed */
+        height: 10px;
+        background: white; /* Slider background */
+        cursor: pointer;
+        border: 1px solid black;
+    }
 
-#zoom-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #ffffff;
-cursor: pointer;
-border: 1px solid black;
-border-radius: 50px;
-}
+    #zoom-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #dcdcdc; /* Adjust thumb color as needed */
+        cursor: pointer;
+        border-radius: 0;
+        border: 2px solid black;
+    }
+
+    #zoom-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        background: #ffffff;
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 50px;
+    }
+
+
+
+    
 }

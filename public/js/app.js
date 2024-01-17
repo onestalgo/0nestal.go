@@ -69,51 +69,46 @@ document.addEventListener("DOMContentLoaded", function () {
     drawImages();
   }
 
-  document.getElementById("closeLogo").addEventListener("click", function () {
-    document.getElementById("popupWrapper").style.display = "none";
-  });
+  var currentStep = 1;
+  var totalSteps = 6;
 
-  function showPopup() {
-    console.log("Showing popup");
-    document.getElementById("popupWrapper").style.display = "block";
+  function showStep(step) {
+    document.querySelectorAll(".step").forEach(function (element) {
+      element.classList.remove("active");
+    });
+    var activeStep = document.querySelector("#step" + step);
+    if (activeStep) {
+      activeStep.classList.add("active");
+    }
   }
 
-  function hidePopup() {
-    console.log("Hiding popup");
-    document.getElementById("popupWrapper").style.display = "none";
+  // Check if it's the user's first visit
+  if (!localStorage.getItem("visited")) {
+    showStep(currentStep);
+    document.getElementById("popupWrapper").style.display = "flex";
+
+    // Set 'visited' in localStorage
+    localStorage.setItem("visited", "true");
   }
 
-  if (!localStorage.getItem("hasVisited")) {
-    console.log("First visit");
-    showPopup();
-  } else {
-    console.log("Not first visit");
-  }
-
-  document.getElementById("closePopup").addEventListener("click", function () {
-    hidePopup();
-    localStorage.setItem("hasVisited", "true");
-  });
-
-  let currentStep = 1;
-  const totalSteps = 6; // Updated to 6 steps
-  showStep(currentStep);
-
-  document.querySelectorAll(".next-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
+  document.querySelectorAll(".next-btn").forEach(function (button) {
+    button.addEventListener("click", function () {
       if (currentStep < totalSteps) {
         currentStep++;
         showStep(currentStep);
+      } else {
+        document.getElementById("popupWrapper").style.display = "none";
       }
     });
   });
 
-  function showStep(step) {
-    document.querySelectorAll(".step").forEach((div) => {
-      div.classList.remove("active");
-    });
-    document.getElementById(`step${step}`).classList.add("active");
-  }
+  document.getElementById("closePopup").addEventListener("click", function () {
+    document.getElementById("popupWrapper").style.display = "none";
+  });
+
+  document.querySelector("#closeLogo").addEventListener("click", function () {
+    document.getElementById("popupWrapper").style.display = "none";
+  });
 
   //  canvas.width = 1440;  // Set desired dimensions
   // canvas.height = 900;
