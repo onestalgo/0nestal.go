@@ -87,7 +87,7 @@ canvas {
 }
 
 #popupWrapper {
-    display: none;
+    display: none; /* Hidden initially, shown via JavaScript */
     position: fixed;
     top: 0;
     left: 0;
@@ -95,21 +95,23 @@ canvas {
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     z-index: 1000;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Style for the popup container */
 #popupContainer {
     background: white;
-    padding: 20px;
     border-radius: 5px;
-    width: 80%;
-    max-width: 500px;
-    overflow-y: auto;
+    width: 80%; /* Consistent width for all steps */
+    max-width: 500px; /* Adjust max-width as needed */
+    min-height: 300px; /* Consistent minimum height */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    margin: auto;
+    overflow: auto;
 }
+
 
 /* Style for the close button */
 #closePopup {
