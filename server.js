@@ -114,7 +114,7 @@ async function main() {
     socket.on("deleteImage", async (data) => {
       try {
         await imagesCollection.deleteOne({ src: data.src });
-        io.emit("imageDeleted", data); // Notify all clients about the deletion
+        io.emit("imageDeleted", data); // Confirm deletion
       } catch (e) {
         console.error("Error deleting image:", e);
       }

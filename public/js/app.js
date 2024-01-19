@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   images = images.map((img) => ({ ...img, locked: false }));
 
   const originalCanvasWidth = 1500;
-  const originalCanvasHeight = 880;
+  const originalCanvasHeight = 1300;
   let scale; // Scale will be set based on the device
 
   // JavaScript code for toggling the text overlay
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const leftThird = image.x + thirdWidth;
       const rightThird = image.x + 2 * thirdWidth;
 
-      const deltaX = clickX < leftThird ? -18 : clickX > rightThird ? 18 : 0;
+      const deltaX = clickX < leftThird ? -20 : clickX > rightThird ? 20 : 0;
       const increase = 15;
       const newHeight = image.height + increase;
       const newWidth = newHeight * (image.img.width / image.img.height);
@@ -222,11 +222,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function checkAndDeleteImage(image) {
+    if (image.pendingDeletion) return; // Skip if already pending deletion
+
     const oneThirdWidth = image.width / 3;
     const offCanvasLeft = (image.x + oneThirdWidth) * scale < 0;
     const offCanvasRight = (image.x + 2 * oneThirdWidth) * scale > canvas.width;
 
     if (offCanvasLeft || offCanvasRight) {
+      image.pendingDeletion = true; // Flag the image
       socket.emit("deleteImage", { src: image.img.src });
       removeImageFromCanvas(image);
     }
@@ -251,6 +254,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     socket.on("imageUpdate", (data) => {
+      const existingImage = images.find((img) => img.src === data.src);
+      if (existingImage && existingImage.pendingDeletion) return; // Ignore updates
+
       updateOrAddImage(data);
       drawImages();
     });
@@ -313,17 +319,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     compressAndUploadImage(file);
   });
+
   function updateOrAddImage(data) {
     const index = images.findIndex((img) => img.src === data.src);
     if (index !== -1) {
       images[index] = { ...images[index], ...data };
     } else {
-      const img = new Image();
-      img.onload = () => {
-        images.push({ ...data, img });
+      const cachedImg = new Image();
+      cachedImg.src = data.src;
+
+      if (cachedImg.complete) {
+        // Image is already in the browser cache
+        console.log("Image loaded from cache:", data.src);
+        images.push({ ...data, img: cachedImg });
         drawImages();
-      };
-      img.src = data.src;
+      } else {
+        // Image not in cache, load it normally
+        cachedImg.onload = () => {
+          console.log("Image loaded from network:", data.src);
+          images.push({ ...data, img: cachedImg });
+          drawImages();
+        };
+        cachedImg.onerror = () => {
+          console.error("Error loading image:", data.src);
+        };
+      }
     }
   }
 
@@ -333,27 +353,47 @@ document.addEventListener("DOMContentLoaded", function () {
       reader.onload = function (event) {
         let img = new Image();
         img.onload = function () {
-          let height = 50;
+          let height = 50; // Max height for an image
           let ratio = img.width / img.height;
           let width = height * ratio;
-          let x = Math.round(Math.random() * (canvas.width - width));
-          let y = Math.round(Math.random() * (canvas.height - height));
 
-          // Ensure event.target.result, which is the src, is not undefined
+          let position = getRandomGridPosition(width, height);
+
           console.log("Uploading image with src:", event.target.result);
 
           socket.emit("uploadImage", {
             src: event.target.result,
-            x,
-            y,
+            x: position.x,
+            y: position.y,
             width,
             height,
           });
+        };
+        img.onerror = () => {
+          console.error("Error reading image file");
         };
         img.src = event.target.result;
       };
       reader.readAsDataURL(compressedBlob);
     });
+  }
+
+  function getRandomGridPosition(width, height) {
+    const gridSize = 50; // Adjust based on the desired grid size
+    const columns = Math.floor(canvas.width / gridSize);
+    const rows = Math.floor(canvas.height / gridSize);
+
+    let randomColumn = Math.floor(Math.random() * columns);
+    let randomRow = Math.floor(Math.random() * rows);
+
+    let x = randomColumn * gridSize;
+    let y = randomRow * gridSize;
+
+    // Adjust x and y to ensure the image fits within the grid cell
+    x = Math.min(x, canvas.width - width);
+    y = Math.min(y, canvas.height - height);
+
+    return { x, y };
   }
 
   function compressImage(file, maxWidth, maxHeight, quality, callback) {
