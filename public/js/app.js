@@ -116,15 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function setupCanvasEventListeners() {
     canvas.addEventListener("click", function (e) {
       const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width; // scale factor for width
-      const scaleY = canvas.height / rect.height; // scale factor for height
-
-      // Adjust mouse click position to canvas coordinates
-      const clickX = (event.clientX - rect.left) * scaleX;
-      const clickY = (event.clientY - rect.top) * scaleY;
-
-      //  const clickX = (e.clientX - rect.left + window.scrollX) / scale;
-      // const clickY = (e.clientY - rect.top + window.scrollY) / scale;
+      const clickX = (e.clientX - rect.left + window.scrollX) / scale;
+      const clickY = (e.clientY - rect.top + window.scrollY) / scale;
 
       const clickedImage = getTopmostImageAtClick(clickX, clickY);
       if (clickedImage) {
