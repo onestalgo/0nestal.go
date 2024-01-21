@@ -7,8 +7,9 @@ h1 {
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
-    overflow: hidden;
+    width: 100vw; /* Viewport width */
+    height: 100vh; /* Viewport height */
+    overflow: hidden; /* Hide overflow */
 }
 
 /* Default styles */
