@@ -361,6 +361,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
           console.log("Uploading image with src:", event.target.result);
 
+          if (isMobileDevice()) {
+            centerCanvasOnImage(position, width, height);
+          }
+
           socket.emit("uploadImage", {
             src: event.target.result,
             x: position.x,
@@ -378,8 +382,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function centerCanvasOnImage(position, width, height) {
+    // Set the zoom to the maximum for mobile devices
+    scale = 1.8;
+    zoomSlider.value = scale; // Update the zoom slider's value
+    updateCanvasSize(scale); // Update the canvas size based on the new scale
+
+    // Ensure canvas is updated before centering
+    setTimeout(() => {
+      // Calculate the center of the image on the scaled canvas
+      let scaledCenterX = (position.x + width / 2) * scale;
+      let scaledCenterY = (position.y + height / 2) * scale;
+
+      // Adjust the canvas view to center on the image
+      let canvasContainer = document.getElementById("canvas-container");
+      if (canvasContainer) {
+        canvasContainer.scrollLeft =
+          scaledCenterX - canvasContainer.offsetWidth / 2;
+        canvasContainer.scrollTop =
+          scaledCenterY - canvasContainer.offsetHeight / 2;
+      }
+    }, 0); // Timeout to allow canvas redraw
+  }
+
   function getRandomGridPosition(width, height) {
-    const gridSize = 50; // Adjust based on the desired grid size
+    const gridSize = 200; // Adjust based on the desired grid size
     const columns = Math.floor(canvas.width / gridSize);
     const rows = Math.floor(canvas.height / gridSize);
 

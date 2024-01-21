@@ -61,18 +61,6 @@ async function main() {
         io.emit("unlockImage", data);
       }, 800); // Adjust the timeout duration as needed
     });
-    //app.post('/api/upload-canvas-image', async (req, res) => {
-    //try {
-    //  const { image } = req.body; // This is your base64 encoded image
-    // Save to MongoDB
-    // You might need to create a new collection for storing these images
-    //  const result = await canvasScreenshotsCollection.insertOne({ image });
-    // res.status(200).json({ message: 'Image saved successfully', id: result.insertedId });
-    //} catch (error) {
-    //     console.error('Error saving canvas image:', error);
-    //     res.status(500).send('Error saving canvas image');
-    //   }
-    //  });
 
     // Image upload endpoint
     app.post(
