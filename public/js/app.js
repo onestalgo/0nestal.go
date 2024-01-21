@@ -406,21 +406,31 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getRandomGridPosition(width, height) {
-    const gridSize = 200; // Adjust based on the desired grid size
-    const columns = Math.floor(canvas.width / gridSize);
-    const rows = Math.floor(canvas.height / gridSize);
+    const gridSize = 200;
+    const columns = Math.floor((originalCanvasWidth - width) / gridSize);
+    const rows = Math.floor((originalCanvasHeight - height) / gridSize);
 
-    let randomColumn = Math.floor(Math.random() * columns);
-    let randomRow = Math.floor(Math.random() * rows);
+    let randomColumn, randomRow;
+
+    do {
+      randomColumn = Math.floor(Math.random() * columns);
+      randomRow = Math.floor(Math.random() * rows);
+    } while (isBorderGrid(randomColumn, randomRow, columns, rows));
 
     let x = randomColumn * gridSize;
     let y = randomRow * gridSize;
 
-    // Adjust x and y to ensure the image fits within the grid cell
-    x = Math.min(x, canvas.width - width);
-    y = Math.min(y, canvas.height - height);
-
     return { x, y };
+  }
+
+  function isBorderGrid(column, row, totalColumns, totalRows) {
+    // Check if the grid cell is on any border of the canvas
+    return (
+      column === 0 ||
+      column === totalColumns - 1 ||
+      row === 0 ||
+      row === totalRows - 1
+    );
   }
 
   function compressImage(file, maxWidth, maxHeight, quality, callback) {
