@@ -303,5 +303,22 @@ img {
 
 
 
+
     
+}
+
+@media screen and (min-width: 1024px) { /* Adjust the breakpoint as needed */
+    #canvas-container {
+        display: flex;
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        height: 100vh; /* Adjust the height as needed, 90vh for some margin */
+        overflow: hidden; /* Hide overflow to prevent scrolling */
+    }
+
+    canvas {
+        max-width: 100%; /* Ensure it fits in the container */
+        max-height: 100%; /* Adjust height to maintain aspect ratio */
+        /* Remove any specific height/width settings that override these */
+    }
 }
