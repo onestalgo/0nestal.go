@@ -228,8 +228,7 @@ img {
     html, body, #canvas-container {
         height: 100vh;
         width: 100vw;
-        position: relative;
-        overflow: auto;
+        overflow: hidden; /* Ensure overflow is hidden */
     }
 
     #canvas {
@@ -237,6 +236,14 @@ img {
        left: 0;
        top: 0;
         
+    }
+
+    #canvas-container {
+        height: 100vh;
+        width: 100vw;
+        overflow: auto; /* Allow scrolling inside the container */
+        position: relative;
+
     }
 
     #button-container {
